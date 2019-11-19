@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "949344688436",
+    "firebase_url": "https://pre-school-arcade-10c5b.firebaseio.com",
+    "project_id": "pre-school-arcade-10c5b",
+    "storage_bucket": "pre-school-arcade-10c5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949344688436:android:8f07877dadb78fb00bad61",
+        "android_client_info": {
+          "package_name": "com.flexbit.preschool_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949344688436-866gs4vf8j1kiftqa32d9hplp1hqrhp9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1onWNwctPf316NHvEnxHvg-MAuMYBqBw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949344688436-866gs4vf8j1kiftqa32d9hplp1hqrhp9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
