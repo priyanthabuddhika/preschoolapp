@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:preschool_app/services/auth.dart';
+import 'package:flutter/services.dart';
 
 class SignIn extends StatefulWidget {
+// toggle between login and sign in
   final Function toggleView;
   SignIn({this.toggleView});
 
@@ -10,6 +12,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  // Authenticate Variables
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
 
@@ -21,81 +24,142 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.blueAccent[500],
-        elevation: 0.0,
-        title: Text('Sign In '),
-        actions: <Widget>[
-          FlatButton.icon(
-            onPressed: () {
-              widget.toggleView();
-            },
-            icon: Icon(Icons.person),
-            label: Text('Sign Up'),
-          )
-        ],
-      ),
-      body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
-            key: _formkey,
+      body: SafeArea(
+        child: SingleChildScrollView(
             child: Column(
+          children: <Widget>[
+            Stack(
+              alignment: AlignmentDirectional.topStart,
               children: <Widget>[
-                SizedBox(
-                  height: 20.0,
-                ),
-                TextFormField(
-                  validator: (val) => val.isEmpty ? 'Enter an Email' : null,
-                  onChanged: (val) {
-                    setState(() {
-                      email = val;
-                    });
-                  },
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                TextFormField(
-                  validator: (val) =>
-                      val.length < 6 ? 'Password must be 6+ char long' : null,
-                  onChanged: (val) {
-                    setState(() {
-                      password = val;
-                    });
-                  },
-                  obscureText: true,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                RaisedButton(
-                  onPressed: () async {
-                    if (_formkey.currentState.validate()) {
-                      print(email);
-                      print(password);
-                      dynamic result =
-                          await _auth.signInwithEmailandPwd(email, password);
-                      if (result == null) {
-                        setState(() {
-                          error = 'Could not sign in with these credentials';
-                        });
-                      } else {
-                        print('Signed In');
-                        print(result);
-                      }
-                    }
-                  },
-                  color: Colors.pink[400],
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(top: 50),
                   child: Text(
-                    'Sign In',
-                    style: TextStyle(color: Colors.white),
+                    'Login',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                )
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(top: 80),
+                  child: Text(
+                    'To Your Account',
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 50),
+                  alignment: Alignment.topRight,
+                  child: Image.asset('images/giraffe.png'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: Container(
+                    decoration: new BoxDecoration(boxShadow: [
+                      new BoxShadow(
+                          color: Colors.grey[300],
+                          blurRadius: 5.0,
+                          spreadRadius: 0.01),
+                    ]),
+                    margin: EdgeInsets.fromLTRB(0, 250, 0, 40),
+                    child: Card(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 50.0),
+                        child: Form(
+                          key: _formkey,
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(hintText: 'Email'),
+                                validator: (val) =>
+                                    val.isEmpty ? 'Enter an Email' : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    email = val;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              TextFormField(
+                                decoration:
+                                    InputDecoration(hintText: 'Password'),
+                                validator: (val) => val.length < 6
+                                    ? 'Password must be 6+ char long'
+                                    : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    password = val;
+                                  });
+                                },
+                                obscureText: true,
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              RaisedButton(
+                                onPressed: () async {
+                                  if (_formkey.currentState.validate()) {
+                                    print(email);
+                                    print(password);
+                                    dynamic result = await _auth
+                                        .signInwithEmailandPwd(email, password);
+                                    if (result == null) {
+                                      setState(() {
+                                        error =
+                                            'Could not sign in with these credentials';
+                                      });
+                                    } else {
+                                      print('Signed In');
+                                      print(result);
+                                    }
+                                  }
+                                },
+                                color: Colors.greenAccent,
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(height: 12.0),
+                              Text(
+                                error,
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 14.0),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
-          )),
+            FlatButton(
+                onPressed: () {
+                  widget.toggleView();
+                },
+                child: Text(
+                  'Create New Account',
+                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                )),
+          ],
+        )),
+      ),
     );
   }
 }
