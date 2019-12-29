@@ -4,17 +4,18 @@ import 'package:flutter/services.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
-  Register({this.toggleView});
+  Register({this.toggleView}); // Gets toggleView function from authenticate class
 
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
+
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
 
-  // Login States
+  // Login input variables
 
   String email = '';
   String password = '';

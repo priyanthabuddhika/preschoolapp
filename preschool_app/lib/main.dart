@@ -11,10 +11,12 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Stream Provider always stream userStrm 
     return StreamProvider<User>.value(
       value: AuthService().userStrm,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        // creates Wrapper class object
         home: Wrapper(),
       ),
     );

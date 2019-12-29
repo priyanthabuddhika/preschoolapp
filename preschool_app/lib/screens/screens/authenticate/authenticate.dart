@@ -8,8 +8,10 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
+   // this value is used to switch between sign in and sign up screens
    bool showSignIn = true;
 
+  // this function is used to switch between sign in and sign up screens
   void toggleView(){
    setState(() {
      showSignIn = !showSignIn;
@@ -18,10 +20,10 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if(showSignIn){
-      return SignIn(toggleView: toggleView);
+      return SignIn(toggleView: toggleView); // create Sign In screen
     }
     else{
-      return Register(toggleView: toggleView);
+      return Register(toggleView: toggleView); // Create Register Screen
     }
   }
 }
