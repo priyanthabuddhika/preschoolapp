@@ -2,24 +2,70 @@ import 'package:flutter/material.dart';
 import 'package:preschool_app/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
 
   static final String path = "lib\screens\screens\home\home.dart";
-  final TextStyle whiteText = TextStyle(color: Colors.white); // Text Color
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  // Text Style Variables
+  final TextStyle whiteText = TextStyle(color: Colors.white); 
+  final TextStyle blackText = TextStyle(color: Colors.black); 
+  // Authservice Variable
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade800,
+      backgroundColor: Colors.white, //Colors.grey.shade800,
+      // Top appbar properties
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.blue,
         elevation: 0,
-        title: Text("Dashboard"),
+        iconTheme: new IconThemeData(color: Colors.white),
+        title: Text("Home",style: TextStyle(color: Colors.white),),
         centerTitle: true,
+         actions: <Widget>[
+            FlatButton.icon(
+              label: Text('Sign Out',style: TextStyle(color: Colors.white),),
+              icon: Icon(Icons.person,color: Colors.white,),
+              onPressed: () async {
+                await _auth.signingOut();
+              },
+            )
+          ],
       ),
-      body: _buildBody(context),
-    );
-  }
 
+      // Side bar menu properties
+
+      drawer: Drawer(
+        child: Column(
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountEmail: Text('abc@abc.com'),
+              accountName: Text('User Test'),
+              currentAccountPicture: CircleAvatar(backgroundImage: AssetImage('images/profile.png'),),),
+            Padding(padding: EdgeInsets.only(top: 20.0),),
+            ListTile(leading: Icon(Icons.home), title: Text('Home'),),
+            ListTile(leading: Icon(Icons.local_activity), title: Text('Activity'),),
+            Divider(),
+           Expanded(
+             child: Align(
+               alignment: FractionalOffset.bottomCenter,
+               child: ListTile(leading: Icon(Icons.settings), title: Text('Settings'),),
+             ),
+           )
+          ],
+        ),
+      ),
+
+      body:_buildBody(context),
+        );
+  }
+   // Body properties goes here
   Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -40,7 +86,7 @@ class Home extends StatelessWidget {
                         children: <Widget>[
                           ListTile(
                             title: Text(
-                              "9,850",
+                              "Kamal",
                               style:
                                   Theme.of(context).textTheme.display1.copyWith(
                                         color: Colors.white,
@@ -55,7 +101,7 @@ class Home extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 16.0),
                             child: Text(
-                              'Steps',
+                              'Progress',
                               style: whiteText,
                             ),
                           )
@@ -71,7 +117,7 @@ class Home extends StatelessWidget {
                         children: <Widget>[
                           ListTile(
                             title: Text(
-                              "70 bpm",
+                              "Kamal",
                               style:
                                   Theme.of(context).textTheme.display1.copyWith(
                                         color: Colors.white,
@@ -86,7 +132,7 @@ class Home extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 16.0),
                             child: Text(
-                              'Avg. Heart Rate',
+                              'Report',
                               style: whiteText,
                             ),
                           )
@@ -108,7 +154,7 @@ class Home extends StatelessWidget {
                         children: <Widget>[
                           ListTile(
                             title: Text(
-                              "2,430",
+                              "Nimal",
                               style:
                                   Theme.of(context).textTheme.display1.copyWith(
                                         color: Colors.white,
@@ -123,7 +169,7 @@ class Home extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 16.0),
                             child: Text(
-                              'Calories Burned',
+                              'Progress',
                               style: whiteText,
                             ),
                           )
@@ -139,7 +185,7 @@ class Home extends StatelessWidget {
                         children: <Widget>[
                           ListTile(
                             title: Text(
-                              "15 kms",
+                              "Nimal",
                               style:
                                   Theme.of(context).textTheme.display1.copyWith(
                                         fontSize: 24.0,
@@ -154,7 +200,7 @@ class Home extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 16.0),
                             child: Text(
-                              'Distance',
+                              'Report',
                             ),
                           )
                         ],
@@ -169,7 +215,7 @@ class Home extends StatelessWidget {
       ),
     );
   }
-
+// Header and title properties goes here
   Widget _buildHeader() {
     return Row(
       children: <Widget>[
@@ -189,8 +235,8 @@ class Home extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "Overall\nDaily Progress",
-                style: whiteText.copyWith(fontSize: 20.0),
+                "Preschool\nArcade Dashboard",
+                style: blackText.copyWith(fontSize: 20.0),
               ),
               const SizedBox(height: 20.0),
               Text(
@@ -203,77 +249,7 @@ class Home extends StatelessWidget {
       ],
     );
   }
-}
 
-/*
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final _auth = AuthService();
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: HomeScreen(),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(15.0),
-            color: Colors.blueAccent[200],
-            child: ListTile(
-              title: Text('Priyantha'),
-              subtitle: Text('abc@abc.com'),
-              trailing: CircleAvatar(
-                radius: 20.0,
-                backgroundImage: AssetImage('images/profile.png'),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(15.0),
-            padding: EdgeInsets.fromLTRB(0, 50, 20, 0),
-            color: Colors.cyanAccent,
-            child: Text('Welcome To Parent Dashboard'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
- appBar: AppBar(
-          title: Text('Pre School Arcade'),
-          backgroundColor: Colors.white70,
-          actions: <Widget>[
-            FlatButton.icon(
-              label: Text('Sign Out'),
-              icon: Icon(Icons.person),
-              onPressed: () async {
-                await _auth.signingOut();
-                
-              },
-            )
-          ],
-        ),
+ }
 
 
-
-       
-
-
-
-       */
