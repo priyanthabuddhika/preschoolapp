@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:preschool_app/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatefulWidget {
-
   static final String path = "lib\screens\screens\home\home.dart";
 
   @override
@@ -11,11 +12,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // form key state
+  final _formKey = GlobalKey<FormState>();
   // Text Style Variables
-  final TextStyle whiteText = TextStyle(color: Colors.white); 
-  final TextStyle blackText = TextStyle(color: Colors.black); 
+  final TextStyle whiteText = TextStyle(color: Colors.white);
+  final TextStyle blackText = TextStyle(color: Colors.black);
+
   // Authservice Variable
   final AuthService _auth = AuthService();
+
+  // Add child form variables
+  String kidName = '';
+  String kidAge = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +34,23 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blue,
         elevation: 0,
         iconTheme: new IconThemeData(color: Colors.white),
-        title: Text("Home",style: TextStyle(color: Colors.white),),
+        title: Text(
+          "Home",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
-         actions: <Widget>[
-            FlatButton.icon(
-              label: Text('Sign Out',style: TextStyle(color: Colors.white),),
-              icon: Icon(Icons.person,color: Colors.white,),
-              onPressed: () async {
-                await _auth.signingOut();
-              },
-            )
-          ],
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(
+              Icons.exit_to_app,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              await _auth.signingOut();
+            },
+          ),
+        ],
       ),
-
       // Side bar menu properties
 
       drawer: Drawer(
@@ -46,26 +58,132 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountEmail: Text('abc@abc.com'),
-              accountName: Text('User Test'),
-              currentAccountPicture: CircleAvatar(backgroundImage: AssetImage('images/profile.png'),),),
-            Padding(padding: EdgeInsets.only(top: 20.0),),
-            ListTile(leading: Icon(Icons.home), title: Text('Home'),),
-            ListTile(leading: Icon(Icons.local_activity), title: Text('Activity'),),
+              accountName: Text('Test'),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('images/profile.png'),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20.0),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+            ),
+            ListTile(
+              leading: Icon(Icons.local_activity),
+              title: Text('Activity'),
+            ),
             Divider(),
-           Expanded(
-             child: Align(
-               alignment: FractionalOffset.bottomCenter,
-               child: ListTile(leading: Icon(Icons.settings), title: Text('Settings'),),
-             ),
-           )
+            Expanded(
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text('Settings'),
+                ),
+              ),
+            )
           ],
         ),
       ),
 
-      body:_buildBody(context),
-        );
+      body: _buildBody(context),
+
+      // Floating Action button properties
+      floatingActionButton: SpeedDial(
+          animatedIcon: AnimatedIcons.menu_close,
+          overlayColor: Colors.black,
+          children: [
+            SpeedDialChild(
+              child: Icon(Icons.add),
+              label: 'Add Child',
+              backgroundColor: Colors.red,
+              onTap: () {
+                // Add child dialog form properties
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SingleChildScrollView(
+                      child: AlertDialog(
+                        content: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                                child: Text('Kid\'s name'),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                                child: TextFormField(
+                                  validator: (val) =>
+                                      val.isEmpty ? 'Enter a name' : null,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      kidName = val;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                                child: Text(
+                                  'Kid\'s Age',
+                                  style: TextStyle(),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                                child: TextFormField(
+                                  keyboardType:
+                                      TextInputType.numberWithOptions(),
+                                  validator: (val) =>
+                                      val.isEmpty ? 'Enter kid\'s Age' : null,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      kidAge = val;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: FlatButton(
+                                  child: Text("Add Child"),
+                                  color: Colors.red,
+                                  onPressed: () {
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      _auth.addChild(kidName, kidAge);
+                                      Navigator.pop(context);
+                                      Fluttertoast.showToast(
+                                          msg: "Child Added Successfully",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIos: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    }
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ]),
+    );
   }
-   // Body properties goes here
+
+  // Body properties goes here
   Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -215,6 +333,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
 // Header and title properties goes here
   Widget _buildHeader() {
     return Row(
@@ -249,7 +368,4 @@ class _HomeState extends State<Home> {
       ],
     );
   }
-
- }
-
-
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preschool_app/services/auth.dart';
 import 'package:flutter/services.dart';
+import 'package:preschool_app/shared/loading.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -14,12 +15,14 @@ class _RegisterState extends State<Register> {
 
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
+  bool loading = false;
 
   // Login input variables
 
   String email = '';
   String password = '';
   String error = '';
+  String name = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class _RegisterState extends State<Register> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -69,7 +72,7 @@ class _RegisterState extends State<Register> {
                             blurRadius: 5.0,
                             spreadRadius: 0.01),
                       ]),
-                      margin: EdgeInsets.fromLTRB(0, 250, 0, 40),
+                      margin: EdgeInsets.fromLTRB(0, 200, 0, 40),
                       child: Card(
                         child: Container(
                             padding: EdgeInsets.symmetric(
@@ -79,7 +82,21 @@ class _RegisterState extends State<Register> {
                               child: Column(
                                 children: <Widget>[
                                   SizedBox(
-                                    height: 20.0,
+                                    height: 15.0,
+                                  ),
+                                    TextFormField(
+                                    decoration:
+                                        InputDecoration(hintText: 'Name'),
+                                    validator: (val) =>
+                                        val.isEmpty ? 'Enter your name' : null,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        name = val;
+                                      });
+                                    },
+                                  ),
+                                   SizedBox(
+                                    height: 15.0,
                                   ),
                                   TextFormField(
                                     decoration:
@@ -93,7 +110,7 @@ class _RegisterState extends State<Register> {
                                     },
                                   ),
                                   SizedBox(
-                                    height: 20.0,
+                                    height: 15.0,
                                   ),
                                   TextFormField(
                                     decoration:
@@ -114,15 +131,19 @@ class _RegisterState extends State<Register> {
                                   RaisedButton(
                                     onPressed: () async {
                                       if (_formkey.currentState.validate()) {
+                                        setState(() {
+                                          loading = true;
+                                        });
                                         print(email);
-                                        print(password);
+                                        print(name);
                                         dynamic result = await _auth
                                             .registerUserwithEmailandPwd(
-                                                email, password);
+                                                email, password,name);
                                         if (result == null) {
                                           setState(() {
                                             error =
                                                 'Please enter a valid Email !';
+                                                loading = false;
                                           });
                                         } else {
                                           print('Signed In');

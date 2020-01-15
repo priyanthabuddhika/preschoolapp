@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preschool_app/services/auth.dart';
 import 'package:flutter/services.dart';
+import 'package:preschool_app/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
 // toggle between login and sign in
@@ -15,6 +16,7 @@ class _SignInState extends State<SignIn> {
   // Authenticate Variables
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
+   bool loading = false;
 
   // Login state
 
@@ -28,7 +30,7 @@ class _SignInState extends State<SignIn> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -113,14 +115,17 @@ class _SignInState extends State<SignIn> {
                               RaisedButton(
                                 onPressed: () async {
                                   if (_formkey.currentState.validate()) {
+                                    setState(() {
+                                      loading = true;
+                                    });
                                     print(email);
-                                    print(password);
                                     dynamic result = await _auth
                                         .signInwithEmailandPwd(email, password);
                                     if (result == null) {
                                       setState(() {
                                         error =
                                             'Could not sign in with these credentials';
+                                            loading = false;
                                       });
                                     } else {
                                       print('Signed In');
