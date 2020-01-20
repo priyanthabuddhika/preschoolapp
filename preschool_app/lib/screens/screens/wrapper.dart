@@ -7,10 +7,11 @@ import 'package:preschool_app/models/users.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     final user = Provider.of<User>(context);
     print(user);
 
-    // Rturn either authenticate or home
+    // Return either authenticate or home
     if (user == null) {
       return Authenticate();
     } else {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:preschool_app/screens/screens/drawer/sidebar.dart';
 import 'package:preschool_app/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -53,41 +54,8 @@ class _HomeState extends State<Home> {
       ),
       // Side bar menu properties
 
-      drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountEmail: Text('abc@abc.com'),
-              accountName: Text('Test'),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('images/profile.png'),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20.0),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-            ),
-            ListTile(
-              leading: Icon(Icons.local_activity),
-              title: Text('Activity'),
-            ),
-            Divider(),
-            Expanded(
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: ListTile(
-                  leading: Icon(Icons.settings),
-                  title: Text('Settings'),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-
+      drawer: SideBar(),
+      
       body: _buildBody(context),
 
       // Floating Action button properties
