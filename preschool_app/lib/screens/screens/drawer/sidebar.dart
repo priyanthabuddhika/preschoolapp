@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SideBar extends StatelessWidget {
+
+  final String selectedTab;
+  SideBar(this.selectedTab);
+  
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -19,6 +23,13 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
+            onTap: (){
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed(
+                '/',
+                arguments: '',
+              );
+            },
 
           ),
           ListTile(

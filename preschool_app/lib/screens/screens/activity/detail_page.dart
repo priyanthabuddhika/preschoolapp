@@ -1,128 +1,134 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:preschool_app/models/lesson.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:preschool_app/services/texttospeech.dart';
 
-class DetailPage extends StatelessWidget {
-  final Lesson lesson;
+class DetailPage extends StatefulWidget {
+  final String lesson;
   DetailPage({Key key, this.lesson}) : super(key: key);
+
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  final PageController ctrl = PageController(viewportFraction: 0.8);
+  final Firestore db = Firestore.instance;
+  Stream slides;
+
+  // Text to Speech Engine
+  TextToSpeech tts = TextToSpeech();
+
+  // Keep track of current page to avoid unnecessary renders
+  int currentPage = 0;
+
+  @override
+  void initState() {
+    String lesson = widget.lesson;
+    _queryDb(tag: lesson);
+    // Set state when page changes
+    ctrl.addListener(() {
+      int next = ctrl.page.round();
+      if (currentPage != next) {
+        setState(() {
+          currentPage = next;
+        });
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final levelIndicator = Container(
+    return StreamBuilder(
+      stream: slides,
+      initialData: [],
+      builder: (context, AsyncSnapshot snap) {
+        List slideList = snap.data.toList();
+
+        return Scaffold(
+          body: PageView.builder(
+            controller: ctrl,
+            itemCount: slideList.length,
+            itemBuilder: (context, int currentIdx) {
+              if (currentIdx == 0) {
+                //return _buildTagPage();
+                bool active = currentIdx == currentPage;
+                return _buildStoryPage(slideList[currentIdx], active);
+              } else if (slideList.length >= currentIdx) {
+                // Active page
+                bool active = currentIdx == currentPage;
+                return _buildStoryPage(slideList[currentIdx], active);
+              }
+              return null;
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  // Query Firestore
+  _queryDb({String tag }) {
+    // Make a Query
+    Query query = db.collection('/Lessons/$tag/res');
+
+    // Map the documents to the data payload
+    slides =
+        query.snapshots().map((list) => list.documents.map((doc) => doc.data));
+  }
+
+  // Builder Functions
+
+  Widget _buildStoryPage(Map data, bool active) {
+    // Animated Properties
+    final double blur = active ? 30 : 0;
+    final double offset = active ? 20 : 0;
+    final double top = active ? 100 : 200;
+
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOutQuint,
+      margin: EdgeInsets.only(top: top, bottom: 50, right: 30),
       child: Container(
-        child: LinearProgressIndicator(
-            backgroundColor: Color.fromRGBO(209, 224, 224, 0.2),
-            value: lesson.indicatorValue,
-            valueColor: AlwaysStoppedAnimation(Colors.green)),
-      ),
-    );
-
-    final coursePrice = Container(
-      padding: const EdgeInsets.all(7.0),
-      decoration: new BoxDecoration(
-          border: new Border.all(color: Colors.white),
-          borderRadius: BorderRadius.circular(5.0)),
-      child: new Text(
-        "\$" + lesson.price.toString(),
-        style: TextStyle(color: Colors.white),
-      ),
-    );
-
-    final topContentText = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(height: 120.0),
-        Icon(
-          Icons.directions_car,
-          color: Colors.white,
-          size: 40.0,
+        decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(20),
         ),
-        Container(
-          width: 90.0,
-          child: new Divider(color: Colors.green),
-        ),
-        SizedBox(height: 10.0),
-        Text(
-          lesson.title,
-          style: TextStyle(color: Colors.white, fontSize: 45.0),
-        ),
-        SizedBox(height: 30.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Expanded(flex: 1, child: levelIndicator),
-            Expanded(
-                flex: 6,
-                child: Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text(
-                      lesson.level,
-                      style: TextStyle(color: Colors.white),
-                    ))),
-            Expanded(flex: 1, child: coursePrice)
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Text(data['char'], style: TextStyle(fontSize: 80.0),),
+            ),
+            Divider(thickness: 1.5,indent: 15.0, endIndent: 15.0,),
+            Expanded(child: Image.network(data['img'])),
+            
+            Text(data['title'],style: TextStyle(fontSize: 40.0),),
+            Divider(thickness: 1.5,indent: 15.0, endIndent: 15.0,),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 25.0),
+              
+              child: FlatButton(
+                color: Colors.green,
+                child: Text('Listen',style: TextStyle(fontSize: 25.0),),
+                onPressed: () {
+                  tts.speak(data['title']);
+                },
+              ),
+            ),
+            // TODO
           ],
         ),
-      ],
-    );
-
-    final topContent = Stack(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.only(left: 10.0),
-            height: MediaQuery.of(context).size.height * 0.5,
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new AssetImage("drive-steering-wheel.jpg"),
-                fit: BoxFit.cover,
-              ),
-            )),
-        Container(
-          height: MediaQuery.of(context).size.height * 0.5,
-          padding: EdgeInsets.all(40.0),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
-          child: Center(
-            child: topContentText,
-          ),
-        ),
-        Positioned(
-          left: 8.0,
-          top: 60.0,
-          child: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back, color: Colors.white),
-          ),
-        )
-      ],
-    );
-
-    final bottomContentText = Text(
-      lesson.content,
-      style: TextStyle(fontSize: 18.0),
-    );
-    final readButton = Container(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
-        width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          onPressed: () => {},
-          color: Color.fromRGBO(58, 66, 86, 1.0),
-          child:
-              Text("TAKE THIS LESSON", style: TextStyle(color: Colors.white)),
-        ));
-    final bottomContent = Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(40.0),
-      child: Center(
-        child: Column(
-          children: <Widget>[bottomContentText, readButton],
-        ),
       ),
-    );
-
-    return Scaffold(
-      body: Column(
-        children: <Widget>[topContent, bottomContent],
-      ),
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
+        BoxShadow(
+            color: Colors.black87,
+            blurRadius: blur,
+            offset: Offset(offset, offset))
+      ]),
     );
   }
 }

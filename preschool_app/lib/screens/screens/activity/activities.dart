@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:preschool_app/models/lesson.dart';
 import 'package:preschool_app/screens/screens/activity/detail_page.dart';
 
@@ -65,10 +66,14 @@ class _ActivityState extends State<Activity> {
           trailing:
               Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
           onTap: () {
+            SpinKitWave(
+              color: Colors.blue,
+              size: 50.0,
+            );
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DetailPage(lesson: lesson)));
+                    builder: (context) => DetailPage(lesson: lesson.title)));
           },
         );
 
@@ -104,10 +109,6 @@ class _ActivityState extends State<Activity> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.home, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.hotel, color: Colors.white),
               onPressed: () {},
             ),
             IconButton(
@@ -153,56 +154,47 @@ List getLessons() {
         level: "Easy",
         indicatorValue: 0.33,
         price: 20,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
+        ),
     Lesson(
         title: "Numbers",
         level: "Easy",
         indicatorValue: 0.33,
         price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
+        ),
     Lesson(
         title: "Colours",
         level: "Medium",
         indicatorValue: 0.66,
-        price: 30,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
+        ),
     Lesson(
         title: "Animals",
         level: "Medium",
         indicatorValue: 0.66,
         price: 30,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
+        ),
     Lesson(
         title: "Vehicles",
         level: "Medium",
         indicatorValue: 1.0,
         price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
+       ),
     Lesson(
         title: "Shapes",
         level: "Medium",
         indicatorValue: 1.0,
         price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
+      ),
     Lesson(
         title: "Relatives",
         level: "Hard",
         indicatorValue: 1.0,
         price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed.  "),
+      ),
     Lesson(
         title: "Body Parts",
         level: "Hard",
         indicatorValue: 1.0,
         price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed.  ")
+   )
   ];
 }

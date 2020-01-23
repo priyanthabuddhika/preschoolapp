@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
       ),
       // Side bar menu properties
 
-      drawer: SideBar(),
+      drawer: SideBar('Home'),
       
       body: _buildBody(context),
 
@@ -327,7 +327,7 @@ class _HomeState extends State<Home> {
               ),
               const SizedBox(height: 20.0),
               Text(
-                "45% to go",
+                "English Learning App",
                 style: TextStyle(color: Colors.grey, fontSize: 16.0),
               ),
             ],
