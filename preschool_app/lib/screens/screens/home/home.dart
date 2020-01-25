@@ -4,15 +4,19 @@ import 'package:preschool_app/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:preschool_app/services/database.dart';
 
 class Home extends StatefulWidget {
-  static final String path = "lib\screens\screens\home\home.dart";
+  final String uid;
 
+  Home(this.uid);
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() => _HomeState(uid);
 }
 
 class _HomeState extends State<Home> {
+  final String uid;
+  _HomeState(this.uid);
   // form key state
   final _formKey = GlobalKey<FormState>();
   // Text Style Variables
@@ -28,11 +32,12 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    print(uid);
     return Scaffold(
       backgroundColor: Colors.white, //Colors.grey.shade800,
       // Top appbar properties
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         elevation: 0,
         iconTheme: new IconThemeData(color: Colors.white),
         title: Text(
@@ -53,11 +58,8 @@ class _HomeState extends State<Home> {
         ],
       ),
       // Side bar menu properties
-
       drawer: SideBar('Home'),
-      
       body: _buildBody(context),
-
       // Floating Action button properties
       floatingActionButton: SpeedDial(
           animatedIcon: AnimatedIcons.menu_close,
@@ -72,74 +74,71 @@ class _HomeState extends State<Home> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return SingleChildScrollView(
-                      child: AlertDialog(
-                        content: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                                child: Text('Kid\'s name'),
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      title: Text("Add Child"),
+                      content: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    hintText: 'Enter Kid\'s Name'),
+                                validator: (val) =>
+                                    val.isEmpty ? 'Enter a name' : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    kidName = val;
+                                  });
+                                },
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                                child: TextFormField(
-                                  validator: (val) =>
-                                      val.isEmpty ? 'Enter a name' : null,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      kidName = val;
-                                    });
-                                  },
-                                ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    hintText: 'Enter Kid\'s Age'),
+                                keyboardType: TextInputType.numberWithOptions(),
+                                validator: (val) =>
+                                    val.isEmpty ? 'Enter kid\'s Age' : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    kidAge = val;
+                                  });
+                                },
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                                child: Text(
-                                  'Kid\'s Age',
-                                  style: TextStyle(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: FlatButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
                                 ),
+                                child: Text("Add Child", style: TextStyle(color: Colors.white),),
+                                color: Colors.red[700],
+                                onPressed: () {
+                                  if (_formKey.currentState.validate()) {
+                                    _formKey.currentState.save();
+                                    _auth.addChild(kidName, kidAge);
+                                    Navigator.pop(context);
+                                    Fluttertoast.showToast(
+                                        msg: "Child Added Successfully",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIos: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+                                },
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                                child: TextFormField(
-                                  keyboardType:
-                                      TextInputType.numberWithOptions(),
-                                  validator: (val) =>
-                                      val.isEmpty ? 'Enter kid\'s Age' : null,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      kidAge = val;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FlatButton(
-                                  child: Text("Add Child"),
-                                  color: Colors.red,
-                                  onPressed: () {
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-                                      _auth.addChild(kidName, kidAge);
-                                      Navigator.pop(context);
-                                      Fluttertoast.showToast(
-                                          msg: "Child Added Successfully",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIos: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    }
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                       ),
                     );
@@ -153,6 +152,7 @@ class _HomeState extends State<Home> {
 
   // Body properties goes here
   Widget _buildBody(BuildContext context) {
+    DatabaseService(uid: uid).getData();
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -337,3 +337,7 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+
+
+

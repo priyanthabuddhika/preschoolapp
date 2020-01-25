@@ -65,14 +65,10 @@ class _SignInState extends State<SignIn> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Container(
-                    decoration: new BoxDecoration(boxShadow: [
-                      new BoxShadow(
-                          color: Colors.grey[300],
-                          blurRadius: 5.0,
-                          spreadRadius: 0.01),
-                    ]),
                     margin: EdgeInsets.fromLTRB(0, 250, 0, 40),
                     child: Card(
+                      color: Colors.pink[50],
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0),),
                       child: Container(
                         padding: EdgeInsets.symmetric(
                             vertical: 20.0, horizontal: 50.0),

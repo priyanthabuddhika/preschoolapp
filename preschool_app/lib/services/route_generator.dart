@@ -9,14 +9,12 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => Home());
-      case '/activity':
+        return MaterialPageRoute(builder: (_) => Activity(uid: args,));
+      case '/Home':
         // Validation of correct data type
         if (args is String) {
           return MaterialPageRoute(
-            builder: (_) => Activity(
-                  data: args,
-                ),
+            builder: (_) => Home(args),
           );
         }
         // If args is not of the correct type, return an error page.

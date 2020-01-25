@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:preschool_app/services/texttospeech.dart';
 
 class DetailPage extends StatefulWidget {
@@ -118,7 +117,6 @@ class _DetailPageState extends State<DetailPage> {
                 },
               ),
             ),
-            // TODO
           ],
         ),
       ),

@@ -1,14 +1,18 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/lesson.dart';
 import 'package:preschool_app/screens/screens/activity/detail_page.dart';
+import 'package:preschool_app/screens/screens/drawer/sidebar.dart';
+import 'package:preschool_app/screens/screens/drawer/bottombar.dart';
 
 class Activity extends StatefulWidget {
-  final String data;
+  final String uid;
 
   Activity({
     Key key,
-    @required this.data,
+    @required this.uid,
   }) : super(key: key);
 
   @override
@@ -17,7 +21,7 @@ class Activity extends StatefulWidget {
 
 class _ActivityState extends State<Activity> {
   List lessons;
-
+  
   @override
   void initState() {
     lessons = getLessons();
@@ -34,7 +38,7 @@ class _ActivityState extends State<Activity> {
             decoration: new BoxDecoration(
                 border: new Border(
                     right: new BorderSide(width: 1.0, color: Colors.white24))),
-            child: Icon(Icons.autorenew, color: Colors.white),
+            child: Icon(lesson.icon, color: Colors.white),
           ),
           title: Text(
             lesson.title,
@@ -78,12 +82,16 @@ class _ActivityState extends State<Activity> {
         );
 
     Card makeCard(Lesson lesson) => Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
           elevation: 8.0,
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
           child: Container(
             height: 120.0,
             decoration: BoxDecoration(
-              color: Colors.teal[300],
+              color: Color.fromRGBO(150, 60, 80, 1.0),
+              borderRadius: BorderRadius.circular(15),
             ),
             child: makeListTile(lesson),
           ),
@@ -100,101 +108,148 @@ class _ActivityState extends State<Activity> {
       ),
     );
 
-    final makeBottom = Container(
-      height: 55.0,
-      child: BottomAppBar(
-        color: Color.fromRGBO(58, 66, 86, 1.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.home, color: Colors.white),
-              onPressed: () {},
+    final makeBottom = BottomBar();
+
+    Future<bool> _onWillPop() {
+      return showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Are you sure?'),
+              content: Text('Do you want to exit App'),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text('No'),
+                ),
+                FlatButton(
+                  onPressed: () => exit(0),
+                  /*Navigator.of(context).pop(true)*/
+                  child: Text('Yes'),
+                ),
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.account_box, color: Colors.white),
-              onPressed: () {},
+          ) ??
+          false;
+    }
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+          elevation: 0,
+          iconTheme: new IconThemeData(color: Colors.white),
+          title: Text(
+            "Lessons",
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          actions: <Widget>[
+            PopupMenuButton(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Icon(FontAwesomeIcons.userCircle),
+              ),
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem(
+                    child: IconButton(
+                      icon: Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Icon(Icons.email),
+                      ),
+                      onPressed: () {
+                        clicked(context, "Email sent");
+                      },
+                    ),
+                  ),
+                ];
+              },
             )
           ],
         ),
-      ),
-    );
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.cyan,
-        elevation: 0,
-        iconTheme: new IconThemeData(color: Colors.white),
-        title: Text(
-          "Lessons",
-          style: TextStyle(color: Colors.white),
+        body: makeBody,
+        bottomNavigationBar: makeBottom,
+        drawer: SideBar('Activity'),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+          child: Icon(Icons.fastfood),
         ),
-        centerTitle: true,
-        actions: <Widget>[
-          FlatButton(
-            child: Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            onPressed: () async {},
-          ),
-        ],
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
-      body: makeBody,
-      bottomNavigationBar: makeBottom,
     );
   }
+}
+
+void clicked(BuildContext context, menu) {
+  final scaffold = Scaffold.of(context);
+  scaffold.showSnackBar(
+    SnackBar(
+      content: Text(menu),
+      action: SnackBarAction(
+          label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+    ),
+  );
 }
 
 List getLessons() {
   return [
     Lesson(
-        title: "Letters",
-        level: "Easy",
-        indicatorValue: 0.33,
-        price: 20,
-        ),
+      title: "Letters",
+      level: "Easy",
+      indicatorValue: 0.33,
+      price: 20,
+      icon: FontAwesomeIcons.adn,
+    ),
     Lesson(
-        title: "Numbers",
-        level: "Easy",
-        indicatorValue: 0.33,
-        price: 50,
-        ),
+      title: "Numbers",
+      level: "Easy",
+      indicatorValue: 0.33,
+      price: 50,
+      icon: FontAwesomeIcons.sortNumericUp,
+    ),
     Lesson(
-        title: "Colours",
-        level: "Medium",
-        indicatorValue: 0.66,
-        ),
+      title: "Colours",
+      level: "Medium",
+      indicatorValue: 0.66,
+      icon: FontAwesomeIcons.pallet,
+    ),
     Lesson(
-        title: "Animals",
-        level: "Medium",
-        indicatorValue: 0.66,
-        price: 30,
-        ),
+      title: "Animals",
+      level: "Medium",
+      indicatorValue: 0.66,
+      price: 30,
+      icon: FontAwesomeIcons.cat,
+    ),
     Lesson(
-        title: "Vehicles",
-        level: "Medium",
-        indicatorValue: 1.0,
-        price: 50,
-       ),
+      title: "Vehicles",
+      level: "Medium",
+      indicatorValue: 1.0,
+      price: 50,
+      icon: FontAwesomeIcons.truck,
+    ),
     Lesson(
-        title: "Shapes",
-        level: "Medium",
-        indicatorValue: 1.0,
-        price: 50,
-      ),
+      title: "Shapes",
+      level: "Medium",
+      indicatorValue: 1.0,
+      price: 50,
+      icon: FontAwesomeIcons.shapes,
+    ),
     Lesson(
-        title: "Relatives",
-        level: "Hard",
-        indicatorValue: 1.0,
-        price: 50,
-      ),
+      title: "Relatives",
+      level: "Hard",
+      indicatorValue: 1.0,
+      price: 50,
+      icon: FontAwesomeIcons.restroom,
+    ),
     Lesson(
-        title: "Body Parts",
-        level: "Hard",
-        indicatorValue: 1.0,
-        price: 50,
-   )
+      title: "Body Parts",
+      level: "Hard",
+      indicatorValue: 1.0,
+      price: 50,
+      icon: FontAwesomeIcons.male,
+    )
   ];
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:preschool_app/screens/screens/activity/activities.dart';
 import 'package:preschool_app/screens/screens/authenticate/authenticate.dart';
-import 'package:preschool_app/screens/screens/home/home.dart';
 import 'package:provider/provider.dart';
 import 'package:preschool_app/models/users.dart';
 
@@ -15,7 +15,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return Authenticate();
     } else {
-      return Home();
+      return Activity(uid: user.uid);
     }
   }
 }
