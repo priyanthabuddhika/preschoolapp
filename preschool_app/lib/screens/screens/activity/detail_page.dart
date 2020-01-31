@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:preschool_app/services/texttospeech.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DetailPage extends StatefulWidget {
   final String lesson;
@@ -11,10 +12,10 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-
-  final PageController ctrl = PageController(viewportFraction: 0.8); // Pageview controller 
+  final PageController ctrl =
+      PageController(viewportFraction: 0.8); // Pageview controller
   final Firestore db = Firestore.instance;
-  Stream slides;  // pages in pageview
+  Stream slides; // pages in pageview
 
   // Text to Speech Engine
   TextToSpeech tts = TextToSpeech();
@@ -69,7 +70,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   // Query Firestore
-  _queryDb({String tag }) {
+  _queryDb({String tag}) {
     // Make a Query
     Query query = db.collection('/Lessons/$tag/res');
 
@@ -92,27 +93,48 @@ class _DetailPageState extends State<DetailPage> {
       margin: EdgeInsets.only(top: top, bottom: 50, right: 30),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
         ),
-        
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: Text(data['char'], style: TextStyle(fontSize: 80.0),),
+              child: Text(
+                data['char'],
+                style: TextStyle(fontSize: 80.0),
+              ),
             ),
-            Divider(thickness: 1.5,indent: 15.0, endIndent: 15.0,),
-            Expanded(child: Image.network(data['img'])),
-            
-            Text(data['title'],style: TextStyle(fontSize: 40.0),),
-            Divider(thickness: 1.5,indent: 15.0, endIndent: 15.0,),
+            Divider(
+              thickness: 1.5,
+              indent: 15.0,
+              endIndent: 15.0,
+            ),
+            Expanded(
+              child: CachedNetworkImage(
+                imageUrl: data['img'],
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            ),
+            Text(
+              data['title'],
+              style: TextStyle(fontSize: 40.0),
+            ),
+            Divider(
+              thickness: 1.5,
+              indent: 15.0,
+              endIndent: 15.0,
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 25.0),
-              
               child: FlatButton(
                 color: Colors.green,
-                child: Text('Listen',style: TextStyle(fontSize: 25.0),),
+                child: Text(
+                  'Listen',
+                  style: TextStyle(fontSize: 25.0),
+                ),
                 onPressed: () {
                   tts.speak(data['title']);
                 },
