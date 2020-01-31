@@ -11,9 +11,10 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  final PageController ctrl = PageController(viewportFraction: 0.8);
+
+  final PageController ctrl = PageController(viewportFraction: 0.8); // Pageview controller 
   final Firestore db = Firestore.instance;
-  Stream slides;
+  Stream slides;  // pages in pageview
 
   // Text to Speech Engine
   TextToSpeech tts = TextToSpeech();

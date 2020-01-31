@@ -3,6 +3,8 @@ import 'package:preschool_app/services/auth.dart';
 import 'package:flutter/services.dart';
 import 'package:preschool_app/shared/loading.dart';
 
+// User REgistration UI class
+
 class Register extends StatefulWidget {
   final Function toggleView;
   Register(
@@ -13,6 +15,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
   bool loading = false;

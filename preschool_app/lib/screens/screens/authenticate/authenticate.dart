@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:preschool_app/screens/screens/authenticate/register.dart';
 import 'package:preschool_app/screens/screens/authenticate/signin.dart';
 
+// This class is a wrapper class to switch between sign in and sign up
+
 class Authenticate extends StatefulWidget {
   @override
   _AuthenticateState createState() => _AuthenticateState();

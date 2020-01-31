@@ -79,7 +79,7 @@ class _SideBarState extends State<SideBar> {
                 title: Text('Sign Out'),
                 onTap: () async {
                 await _authService.signingOut();
-                Navigator.pop(context);
+                Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
               },
               ),
             ),

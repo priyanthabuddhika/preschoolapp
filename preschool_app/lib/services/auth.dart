@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:preschool_app/models/users.dart';
 import 'package:preschool_app/services/database.dart';
 
+// This class has all functions to work with FirebaseAuth
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   
