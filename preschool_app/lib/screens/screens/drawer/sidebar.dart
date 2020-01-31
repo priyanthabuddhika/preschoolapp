@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:preschool_app/services/auth.dart';
+
+// SideBar Drawer class
 
 class SideBar extends StatefulWidget {
+  // TODO Selected tab higlight
   final String selectedTab;
   SideBar(this.selectedTab);
 
@@ -10,6 +14,7 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
+  final AuthService _authService = AuthService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser user;
 
@@ -70,8 +75,12 @@ class _SideBarState extends State<SideBar> {
             child: Align(
               alignment: FractionalOffset.bottomCenter,
               child: ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Sign Out'),
+                onTap: () async {
+                await _authService.signingOut();
+                Navigator.pop(context);
+              },
               ),
             ),
           )

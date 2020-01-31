@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:preschool_app/models/child.dart';
 import 'package:preschool_app/models/lesson.dart';
 import 'package:preschool_app/screens/screens/activity/detail_page.dart';
+import 'package:preschool_app/screens/screens/activity/selectchild.dart';
 import 'package:preschool_app/screens/screens/drawer/sidebar.dart';
 import 'package:preschool_app/screens/screens/drawer/bottombar.dart';
+import 'package:provider/provider.dart';
 
+// Lesson list class UI 
 class Activity extends StatefulWidget {
   final String uid;
 
@@ -20,8 +23,9 @@ class Activity extends StatefulWidget {
 }
 
 class _ActivityState extends State<Activity> {
-  List lessons;
-  
+ 
+  List lessons; // Lesson List
+
   @override
   void initState() {
     lessons = getLessons();
@@ -30,6 +34,9 @@ class _ActivityState extends State<Activity> {
 
   @override
   Widget build(BuildContext context) {
+    final children = Provider.of<List<Child>>(context); // get Child object list from streamprovider
+    List<String> childList = [];  // Child list from child objects
+
     ListTile makeListTile(Lesson lesson) => ListTile(
           contentPadding:
               EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -70,10 +77,6 @@ class _ActivityState extends State<Activity> {
           trailing:
               Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
           onTap: () {
-            SpinKitWave(
-              color: Colors.blue,
-              size: 50.0,
-            );
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -132,6 +135,33 @@ class _ActivityState extends State<Activity> {
           false;
     }
 
+    try {
+      if (children.isNotEmpty) {
+        int count = 0;
+        children.forEach((child) {
+          childList.insert(count++, child.name);
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    void _showChildSelectMenu() {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              color: Colors.white,
+            ),
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+            child: SelectChild(childList),
+          );
+        },
+      );
+    }
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -146,25 +176,14 @@ class _ActivityState extends State<Activity> {
           ),
           centerTitle: true,
           actions: <Widget>[
-            PopupMenuButton(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: Icon(FontAwesomeIcons.userCircle),
+            FlatButton.icon(
+              icon: Icon(
+                FontAwesomeIcons.userCircle,
+                color: Colors.white,
               ),
-              itemBuilder: (BuildContext context) {
-                return [
-                  PopupMenuItem(
-                    child: IconButton(
-                      icon: Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Icon(Icons.email),
-                      ),
-                      onPressed: () {
-                        clicked(context, "Email sent");
-                      },
-                    ),
-                  ),
-                ];
+              label: Text(''),
+              onPressed: () {
+                _showChildSelectMenu();
               },
             )
           ],
@@ -183,31 +202,18 @@ class _ActivityState extends State<Activity> {
   }
 }
 
-void clicked(BuildContext context, menu) {
-  final scaffold = Scaffold.of(context);
-  scaffold.showSnackBar(
-    SnackBar(
-      content: Text(menu),
-      action: SnackBarAction(
-          label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-    ),
-  );
-}
-
 List getLessons() {
   return [
     Lesson(
       title: "Letters",
       level: "Easy",
       indicatorValue: 0.33,
-      price: 20,
       icon: FontAwesomeIcons.adn,
     ),
     Lesson(
       title: "Numbers",
       level: "Easy",
       indicatorValue: 0.33,
-      price: 50,
       icon: FontAwesomeIcons.sortNumericUp,
     ),
     Lesson(
@@ -220,35 +226,30 @@ List getLessons() {
       title: "Animals",
       level: "Medium",
       indicatorValue: 0.66,
-      price: 30,
       icon: FontAwesomeIcons.cat,
     ),
     Lesson(
       title: "Vehicles",
       level: "Medium",
       indicatorValue: 1.0,
-      price: 50,
       icon: FontAwesomeIcons.truck,
     ),
     Lesson(
       title: "Shapes",
       level: "Medium",
       indicatorValue: 1.0,
-      price: 50,
       icon: FontAwesomeIcons.shapes,
     ),
     Lesson(
       title: "Relatives",
       level: "Hard",
       indicatorValue: 1.0,
-      price: 50,
       icon: FontAwesomeIcons.restroom,
     ),
     Lesson(
       title: "Body Parts",
       level: "Hard",
       indicatorValue: 1.0,
-      price: 50,
       icon: FontAwesomeIcons.male,
     )
   ];
