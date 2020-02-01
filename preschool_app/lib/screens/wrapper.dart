@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preschool_app/models/child.dart';
-import 'package:preschool_app/screens/screens/activity/activities.dart';
-import 'package:preschool_app/screens/screens/authenticate/authenticate.dart';
+import 'package:preschool_app/screens/activity/activities.dart';
+import 'package:preschool_app/screens/authenticate/authenticate.dart';
 import 'package:preschool_app/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:preschool_app/models/users.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preschool_app/models/child.dart';
-import 'package:preschool_app/screens/screens/drawer/sidebar.dart';
-import 'package:preschool_app/screens/screens/home/datalist.dart';
+import 'package:preschool_app/screens/drawer/sidebar.dart';
+import 'package:preschool_app/screens/home/datalist.dart';
 import 'package:preschool_app/services/auth.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -57,33 +57,44 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    height: 100,
-                    width: 100,
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(
-                      value: 0.5,
-                      valueColor: AlwaysStoppedAnimation(Colors.blue),
-                      backgroundColor: Colors.grey.shade700,
-                    ),
-                  ),
-                  const SizedBox(width: 20.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Preschool\nArcade Dashboard",
-                          style: blackText.copyWith(
-                              fontSize: 20.0, fontWeight: FontWeight.w500),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                elevation: 4.0,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    
+                    children: <Widget>[
+                      Container(
+                          height: 100,
+                          width: 100,
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            backgroundImage: AssetImage('images/profile.png'),
+                          )),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Preschool Arcade",
+                              style: blackText.copyWith(
+                                  fontSize: 20.0, fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(height: 15.0),
+                            Text('Dashboard', style: blackText.copyWith(
+                                  fontSize: 15.0, fontWeight: FontWeight.w300),)
+                          ],
                         ),
-                        const SizedBox(height: 20.0),
-                      ],
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
             SizedBox(
@@ -123,7 +134,7 @@ class _HomeState extends State<Home> {
                                 padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
                                 child: TextFormField(
                                   decoration: InputDecoration(
-                                      hintText: 'Enter Kid\'s Name'),
+                                      hintText: 'Enter Kid\'s first Name'),
                                   validator: (val) =>
                                       val.isEmpty ? 'Enter a name' : null,
                                   onChanged: (val) {

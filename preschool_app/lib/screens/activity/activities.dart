@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/child.dart';
 import 'package:preschool_app/models/lesson.dart';
-import 'package:preschool_app/screens/screens/activity/detail_page.dart';
-import 'package:preschool_app/screens/screens/activity/selectchild.dart';
-import 'package:preschool_app/screens/screens/drawer/sidebar.dart';
-import 'package:preschool_app/screens/screens/drawer/bottombar.dart';
+import 'package:preschool_app/screens/activity/detail_page.dart';
+import 'package:preschool_app/screens/activity/selectchild.dart';
+import 'package:preschool_app/screens/drawer/custom_dialog.dart';
+import 'package:preschool_app/screens/drawer/sidebar.dart';
+import 'package:preschool_app/screens/drawer/bottombar.dart';
 import 'package:provider/provider.dart';
 
-// Lesson list class UI 
+// Lesson list class UI
 class Activity extends StatefulWidget {
   final String uid;
 
@@ -23,7 +24,6 @@ class Activity extends StatefulWidget {
 }
 
 class _ActivityState extends State<Activity> {
- 
   List lessons; // Lesson List
 
   @override
@@ -34,8 +34,9 @@ class _ActivityState extends State<Activity> {
 
   @override
   Widget build(BuildContext context) {
-    final children = Provider.of<List<Child>>(context); // get Child object list from streamprovider
-    List<String> childList = [];  // Child list from child objects
+    final children = Provider.of<List<Child>>(
+        context); // get Child object list from streamprovider
+    List<String> childList = []; // Child list from child objects
 
     ListTile makeListTile(Lesson lesson) => ListTile(
           contentPadding:
@@ -192,7 +193,90 @@ class _ActivityState extends State<Activity> {
         bottomNavigationBar: makeBottom,
         drawer: SideBar('Activity'),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    elevation: 0.0,
+                    backgroundColor: Colors.transparent,
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(
+                            top: 82.0,
+                            bottom: 16.0,
+                            left: 16.0,
+                            right: 16.0,
+                          ),
+                          margin: EdgeInsets.only(top: 66.0),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(16.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 10.0,
+                                offset: const Offset(0.0, 10.0),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisSize:
+                                MainAxisSize.min, // To make the card compact
+                            children: <Widget>[
+                              Text(
+                                '20',
+                                style: TextStyle(
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.pink),
+                              ),
+                              SizedBox(height: 16.0),
+                              Text(
+                                'You have 20 Ice Creams, cool! Learn more lessons to get more.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              SizedBox(height: 24.0),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // To close the dialog
+                                  },
+                                  child: Text(
+                                    'Okay',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        Positioned(
+                          left: 16.0,
+                          right: 16.0,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.blueAccent,
+                            radius: 66.0,
+                            backgroundImage: AssetImage('images/ice_cream.jpg'),
+                          ),
+                        ),
+                        //...top circlular image part,
+                      ],
+                    ),
+                  );
+                });
+          },
           backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
           child: Icon(Icons.fastfood),
         ),

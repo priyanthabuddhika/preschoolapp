@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:preschool_app/models/users.dart';
-import 'package:preschool_app/screens/screens/wrapper.dart';
+import 'package:preschool_app/screens/wrapper.dart';
 import 'package:preschool_app/services/auth.dart';
 import 'package:preschool_app/services/route_generator.dart';
 import 'package:provider/provider.dart';

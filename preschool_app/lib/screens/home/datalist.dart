@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/child.dart';
-import 'package:preschool_app/screens/screens/home/progress.dart';
-import 'package:preschool_app/screens/screens/home/report.dart';
+import 'package:preschool_app/screens/home/progress.dart';
+import 'package:preschool_app/screens/home/report_page.dart';
 import 'package:provider/provider.dart';
 
 // This class get a child stream from firestore and create a list of child in Home UI 
@@ -34,7 +34,7 @@ class _ChildListState extends State<ChildList> {
         ? ListView.builder(
             itemCount: children.length,
             itemBuilder: (context, index) {
-              return ChildTile(children[index].name);
+              return ChildTile(children[index].name,children[index].age);
             },
           )
         : Padding(
@@ -80,6 +80,7 @@ class _ChildListState extends State<ChildList> {
 
 class ChildTile extends StatelessWidget {
   final String name;
+  final String age;
   // Text theme
   final TextStyle whiteText = TextStyle(color: Colors.white);
   final TextStyle blackText = TextStyle(color: Colors.black);
@@ -96,7 +97,7 @@ class ChildTile extends StatelessWidget {
   ];
   final _random = new Random();
 
-  ChildTile(this.name);
+  ChildTile(this.name, this.age);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -192,7 +193,7 @@ class ChildTile extends StatelessWidget {
                  Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Report(),
+                    builder: (context) => ReportPage(this.name,this.age),
                   ),
                 );
               },

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:preschool_app/screens/screens/activity/activities.dart';
-import 'package:preschool_app/screens/screens/home/home.dart';
-import 'package:preschool_app/screens/screens/wrapper.dart';
+import 'package:preschool_app/screens/activity/activities.dart';
+import 'package:preschool_app/screens/activity/games/game_page.dart';
+import 'package:preschool_app/screens/home/home.dart';
+import 'package:preschool_app/screens/wrapper.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -11,6 +12,10 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => Activity(uid: args,));
+        break;
+      case '/Games':
+        return MaterialPageRoute(builder: (_) => Games(),);
+        break;
       case '/Home':
         // Validation of correct data type
         if (args is String) {
@@ -21,6 +26,7 @@ class RouteGenerator {
         // If args is not of the correct type, return an error page.
         // You can also throw an exception while in development.
         return _errorRoute();
+        break;
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return  MaterialPageRoute(builder: (_) => Wrapper());

@@ -103,7 +103,7 @@ class _DetailPageState extends State<DetailPage> {
               padding: const EdgeInsets.only(top: 10.0),
               child: Text(
                 data['char'],
-                style: TextStyle(fontSize: 80.0),
+                style: TextStyle(fontSize: 60.0),
               ),
             ),
             Divider(

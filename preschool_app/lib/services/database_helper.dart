@@ -1,6 +1,5 @@
 
 import 'package:sqflite/sqflite.dart';
-import 'package:async/async.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:preschool_app/models/report.dart';

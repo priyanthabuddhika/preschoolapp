@@ -24,6 +24,7 @@ dependencies:
   shared_preferences: ^0.5.3+5
   cached_network_image: ^2.0.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
