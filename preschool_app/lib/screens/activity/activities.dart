@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/child.dart';
 import 'package:preschool_app/models/lesson.dart';
+import 'package:preschool_app/screens/activity/char_selecter.dart';
 import 'package:preschool_app/screens/activity/detail_page.dart';
 import 'package:preschool_app/screens/activity/selectchild.dart';
-import 'package:preschool_app/screens/drawer/custom_dialog.dart';
 import 'package:preschool_app/screens/drawer/sidebar.dart';
 import 'package:preschool_app/screens/drawer/bottombar.dart';
 import 'package:provider/provider.dart';
@@ -78,10 +78,19 @@ class _ActivityState extends State<Activity> {
           trailing:
               Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
           onTap: () {
-            Navigator.push(
+            if(lesson.color != null){
+               Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CharSelectPage(lesson: lesson.title)));
+            }
+            else{
+               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => DetailPage(lesson: lesson.title)));
+            }
+           
           },
         );
 
@@ -94,7 +103,7 @@ class _ActivityState extends State<Activity> {
           child: Container(
             height: 120.0,
             decoration: BoxDecoration(
-              color: Color.fromRGBO(150, 60, 80, 1.0),
+              color: lesson.color??Color.fromRGBO(150, 60, 80, 1.0),
               borderRadius: BorderRadius.circular(15),
             ),
             child: makeListTile(lesson),
@@ -230,7 +239,7 @@ class _ActivityState extends State<Activity> {
                                 MainAxisSize.min, // To make the card compact
                             children: <Widget>[
                               Text(
-                                '20',
+                                '20🍦',
                                 style: TextStyle(
                                     fontSize: 30.0,
                                     fontWeight: FontWeight.w700,
@@ -295,10 +304,24 @@ List getLessons() {
       icon: FontAwesomeIcons.adn,
     ),
     Lesson(
+      title: 'Letters',
+      level: 'Level 1',
+      indicatorValue: 0.5,
+      icon: FontAwesomeIcons.question,
+      color: Colors.teal,
+    ),
+    Lesson(
       title: "Numbers",
       level: "Easy",
       indicatorValue: 0.33,
       icon: FontAwesomeIcons.sortNumericUp,
+    ),
+      Lesson(
+      title: "Numbers",
+      level: "Level 1",
+      indicatorValue: 0.33,
+      icon: FontAwesomeIcons.question,
+      color: Colors.teal
     ),
     Lesson(
       title: "Colours",
@@ -306,11 +329,25 @@ List getLessons() {
       indicatorValue: 0.66,
       icon: FontAwesomeIcons.pallet,
     ),
+       Lesson(
+      title: "Colours",
+      level: "Level 2",
+      indicatorValue: 0.33,
+      icon: FontAwesomeIcons.question,
+      color: Colors.teal
+    ),
     Lesson(
       title: "Animals",
       level: "Medium",
       indicatorValue: 0.66,
       icon: FontAwesomeIcons.cat,
+    ),
+       Lesson(
+      title: "Animals",
+      level: "Level 2",
+      indicatorValue: 0.33,
+      icon: FontAwesomeIcons.question,
+      color: Colors.teal
     ),
     Lesson(
       title: "Vehicles",
@@ -318,11 +355,25 @@ List getLessons() {
       indicatorValue: 1.0,
       icon: FontAwesomeIcons.truck,
     ),
+       Lesson(
+      title: "Vehicles",
+      level: "Level 2",
+      indicatorValue: 0.33,
+      icon: FontAwesomeIcons.question,
+      color: Colors.teal
+    ),
     Lesson(
       title: "Shapes",
       level: "Medium",
       indicatorValue: 1.0,
       icon: FontAwesomeIcons.shapes,
+    ),
+       Lesson(
+      title: "Shapes",
+      level: "Level 2",
+      indicatorValue: 0.33,
+      icon: FontAwesomeIcons.question,
+      color: Colors.teal
     ),
     Lesson(
       title: "Relatives",
@@ -330,11 +381,25 @@ List getLessons() {
       indicatorValue: 1.0,
       icon: FontAwesomeIcons.restroom,
     ),
+       Lesson(
+      title: "Relatives",
+      level: "Level 3",
+      indicatorValue: 0.33,
+      icon: FontAwesomeIcons.question,
+      color: Colors.teal
+    ),
     Lesson(
       title: "Body Parts",
       level: "Hard",
       indicatorValue: 1.0,
       icon: FontAwesomeIcons.male,
-    )
+    ),
+       Lesson(
+      title: "Body Parts",
+      level: "Level 3",
+      indicatorValue: 0.33,
+      icon: FontAwesomeIcons.question,
+      color: Colors.teal
+    ),
   ];
 }

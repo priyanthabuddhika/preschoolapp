@@ -66,7 +66,6 @@ class _HomeState extends State<Home> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    
                     children: <Widget>[
                       Container(
                           height: 100,
@@ -87,8 +86,11 @@ class _HomeState extends State<Home> {
                                   fontSize: 20.0, fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(height: 15.0),
-                            Text('Dashboard', style: blackText.copyWith(
-                                  fontSize: 15.0, fontWeight: FontWeight.w300),)
+                            Text(
+                              'Dashboard',
+                              style: blackText.copyWith(
+                                  fontSize: 15.0, fontWeight: FontWeight.w300),
+                            )
                           ],
                         ),
                       )
@@ -102,7 +104,7 @@ class _HomeState extends State<Home> {
             ),
             Expanded(
               flex: 1,
-              child: ChildList(),
+              child: ChildList(uid),
             ),
           ],
         ),

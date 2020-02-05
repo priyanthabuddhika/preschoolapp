@@ -137,6 +137,14 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 onPressed: () {
                   tts.speak(data['title']);
+                  Future.delayed(const Duration(seconds: 1), () {
+                    setState(() {
+                      ctrl.nextPage(
+                        duration: Duration(seconds: 2),
+                        curve: Curves.easeOutQuint,
+                      );
+                    });
+                  });
                 },
               ),
             ),

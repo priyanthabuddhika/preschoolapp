@@ -49,6 +49,16 @@ class DatabaseService {
     });
   }
 
+   deleteChild(String name)async{
+    try {
+     await userCollection.document(uid).collection('Child').document(name).delete().then((onValue){
+       print('Child Deleted successfully');
+     });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   List<Child> _childlistFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Child(

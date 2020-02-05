@@ -6,6 +6,8 @@ import 'package:preschool_app/models/game.dart';
 import 'package:preschool_app/screens/activity/games/color_match.dart';
 import 'package:preschool_app/screens/activity/games/dice.dart';
 import 'package:preschool_app/screens/activity/games/drag_drop.dart';
+import 'package:preschool_app/screens/activity/games/play.dart';
+import 'package:preschool_app/screens/activity/games/scratch.dart';
 import 'package:preschool_app/screens/drawer/bottombar.dart';
 import 'package:preschool_app/screens/drawer/sidebar.dart';
 
@@ -71,13 +73,22 @@ class _GamesState extends State<Games> {
                     context, MaterialPageRoute(builder: (context) => Dice()));
                 break;
               case 'Drag Drop':
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => DragDrop()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DragDrop()));
                 break;
               case 'Color Match':
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ColorMatch()));
                 break;
+              case 'Scratch':
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ScratchGame()));
+                break;
+              case 'Play':
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PlayList()));
+                break;
+            
               default:
             }
           },
@@ -152,7 +163,7 @@ class _GamesState extends State<Games> {
         drawer: SideBar('Activity'),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-              showDialog(
+            showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return Dialog(
@@ -188,7 +199,7 @@ class _GamesState extends State<Games> {
                                 MainAxisSize.min, // To make the card compact
                             children: <Widget>[
                               Text(
-                                '20',
+                                '20🍦',
                                 style: TextStyle(
                                     fontSize: 30.0,
                                     fontWeight: FontWeight.w700,
@@ -219,7 +230,6 @@ class _GamesState extends State<Games> {
                             ],
                           ),
                         ),
-                        
                         Positioned(
                           left: 16.0,
                           right: 16.0,
@@ -233,7 +243,6 @@ class _GamesState extends State<Games> {
                     ),
                   );
                 });
-         
           },
           backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
           child: Icon(Icons.fastfood),
@@ -246,23 +255,37 @@ class _GamesState extends State<Games> {
 
 List getGames() {
   return [
+
     GameModel(
       title: 'Dice',
-      level: 'Easy',
+      level: 'Level 1',
       icon: FontAwesomeIcons.dice,
       indicatorValue: 0.2,
     ),
     GameModel(
+      title: 'Drag Drop',
+      level: 'Level 1',
+      icon: FontAwesomeIcons.gripHorizontal,
+      indicatorValue: 0.2,
+    ),
+    GameModel(
+      title: 'Play',
+      level: 'Level 1',
+      icon: FontAwesomeIcons.play,
+      indicatorValue: 0.7,
+    ),
+
+    GameModel(
       title: 'Color Match',
-      level: 'Medium',
+      level: 'Level 2',
       icon: FontAwesomeIcons.pallet,
       indicatorValue: 0.4,
     ),
     GameModel(
-      title: 'Drag Drop',
-      level: 'Easy',
-      icon: FontAwesomeIcons.gripHorizontal,
-      indicatorValue: 0.2,
-    )
+      title: 'Scratch',
+      level: 'Level 2',
+      icon: FontAwesomeIcons.sprayCan,
+      indicatorValue: 0.5,
+    ),
   ];
 }

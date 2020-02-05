@@ -23,6 +23,7 @@ dependencies:
   flutter_tts: ^0.8.6
   shared_preferences: ^0.5.3+5
   cached_network_image: ^2.0.0
+  audioplayers: ^0.13.3
 
 
 dev_dependencies:
@@ -36,6 +37,7 @@ flutter:
 
   assets:
     - images/
+    - assets/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
