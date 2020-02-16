@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:preschool_app/models/child.dart';
-import 'package:preschool_app/screens/activity/activities.dart';
+import 'package:preschool_app/screens/activity/activity_List.dart';
 import 'package:preschool_app/screens/authenticate/authenticate.dart';
 import 'package:preschool_app/services/database.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class Wrapper extends StatelessWidget {
     } else {
       return StreamProvider<List<Child>>.value(
       value: DatabaseService(uid: user.uid).childInfo,
-      child:Activity(uid: user.uid),);
+      child:ActivityList(uid: user.uid),);
     }
   }
 }

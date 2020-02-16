@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:preschool_app/screens/activity/activities.dart';
+import 'package:preschool_app/screens/activity/activity_List.dart';
 import 'package:preschool_app/screens/activity/games/game_page.dart';
 import 'package:preschool_app/screens/home/home.dart';
 import 'package:preschool_app/screens/wrapper.dart';
@@ -11,7 +11,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => Activity(uid: args,));
+        return MaterialPageRoute(builder: (_) => ActivityList(uid: args,));
         break;
       case '/Games':
         return MaterialPageRoute(builder: (_) => Games(),);

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/game.dart';
-import 'package:preschool_app/screens/activity/games/color_match.dart';
 import 'package:preschool_app/screens/activity/games/dice.dart';
 import 'package:preschool_app/screens/activity/games/drag_drop.dart';
 import 'package:preschool_app/screens/activity/games/play.dart';
@@ -76,10 +75,7 @@ class _GamesState extends State<Games> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => DragDrop()));
                 break;
-              case 'Color Match':
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ColorMatch()));
-                break;
+             
               case 'Scratch':
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ScratchGame()));

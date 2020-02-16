@@ -3,19 +3,16 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:preschool_app/services/database_helper.dart';
 
-class CharSelectPage extends StatefulWidget {
+class ImgSelectPage extends StatefulWidget {
   final String lesson;
-  CharSelectPage({Key key, this.lesson}) : super(key: key);
+  ImgSelectPage({Key key, this.lesson}) : super(key: key);
 
   @override
-  _CharSelectPageState createState() => _CharSelectPageState(lesson);
+  _ImgSelectPageState createState() => _ImgSelectPageState();
 }
 
-class _CharSelectPageState extends State<CharSelectPage> {
-  final String lesson;
-  final DatabaseHelper dbHelper = new DatabaseHelper();
+class _ImgSelectPageState extends State<ImgSelectPage> {
   final PageController ctrl =
       PageController(viewportFraction: 0.8); // Pageview controller
   final Firestore db = Firestore.instance;
@@ -24,11 +21,8 @@ class _CharSelectPageState extends State<CharSelectPage> {
   // Keep track of current page to avoid unnecessary renders
   int currentPage = 0;
 
-  _CharSelectPageState(this.lesson);
-
   @override
   void initState() {
-    dbHelper.initializeDatabase();
     String lesson = widget.lesson;
     _queryDb(tag: lesson);
     // Set state when page changes
@@ -89,7 +83,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
     // Animated Properties
     final double blur = active ? 30 : 0;
     final double offset = active ? 20 : 0;
-    final double top = active ? 100 : 200;
+    final double top = active ? 50 : 150;
 
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
@@ -106,7 +100,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                'Select the correct letter ',
+                'Select the correct image ',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
             ),
@@ -142,13 +136,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
                   ),
                 ),
                 onPressed: () {
-                  var count;
-                  Future getCount() async {
-                    count = await dbHelper.updateMark(
-                        "Saman", 2, lesson, currentPage.toString(), 0);
-                  }
-                  getCount().then((value) {
-                           showDialog(
+                  showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return Dialog(
@@ -184,8 +172,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
                                       .min, // To make the card compact
                                   children: <Widget>[
                                     Text(
-                                      //'-1🍦',
-                                      "$count",
+                                      '-1🍦',
                                       style: TextStyle(
                                           fontSize: 50.0,
                                           fontWeight: FontWeight.w700,
@@ -199,7 +186,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
                                         fontSize: 16.0,
                                       ),
                                     ),
-                                    SizedBox(height: 16.0),
+                                     SizedBox(height: 16.0),
                                     Text(
                                       data['title'],
                                       textAlign: TextAlign.center,
@@ -215,11 +202,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                           setState(() {
-                                            ctrl.nextPage(
-                                              duration:
-                                                  Duration(milliseconds: 900),
-                                              curve: Curves.easeOutQuint,
-                                            );
+                                            ctrl.nextPage(duration: Duration(milliseconds: 900), curve: Curves.easeOutQuint,);
                                           });
                                           // To close the dialog
                                         },
@@ -248,8 +231,6 @@ class _CharSelectPageState extends State<CharSelectPage> {
                           ),
                         );
                       });
-               
-                  });
                 },
               ),
             ),
@@ -262,113 +243,101 @@ class _CharSelectPageState extends State<CharSelectPage> {
                   style: TextStyle(fontSize: 25.0),
                 ),
                 onPressed: () {
-                  var count;
-                  Future getCount() async {
-                    count = await dbHelper.updateMark(
-                        "Saman", 2, lesson, currentPage.toString(), 1);
-                  }
-
-                  getCount().then((value) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            elevation: 0.0,
-                            backgroundColor: Colors.transparent,
-                            child: Stack(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    top: 82.0,
-                                    bottom: 16.0,
-                                    left: 16.0,
-                                    right: 16.0,
-                                  ),
-                                  margin: EdgeInsets.only(top: 66.0),
-                                  decoration: new BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 10.0,
-                                        offset: const Offset(0.0, 10.0),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize
-                                        .min, // To make the card compact
-                                    children: <Widget>[
-                                      Text(
-                                        //'+1🍦',
-                                        "$count",
-                                        style: TextStyle(
-                                            fontSize: 50.0,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.red),
-                                      ),
-                                      SizedBox(height: 16.0),
-                                      Text(
-                                        'You have won one Ice Cream, Answer correctly to gain more ice creams',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                      SizedBox(height: 16.0),
-                                      Text(
-                                        data['title'],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 35.0,
-                                          color: Colors.blueAccent,
-                                        ),
-                                      ),
-                                      SizedBox(height: 24.0),
-                                      Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: FlatButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            setState(() {
-                                              ctrl.nextPage(
-                                                duration:
-                                                    Duration(milliseconds: 500),
-                                                curve: Curves.easeOutQuint,
-                                              );
-                                            }); // To close the dialog
-                                          },
-                                          child: Text(
-                                            'Okay',
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                Positioned(
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          elevation: 0.0,
+                          backgroundColor: Colors.transparent,
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(
+                                  top: 82.0,
+                                  bottom: 16.0,
                                   left: 16.0,
                                   right: 16.0,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.blueAccent,
-                                    radius: 66.0,
-                                    backgroundImage:
-                                        AssetImage('images/ice_cream.jpg'),
-                                  ),
                                 ),
-                                //...top circlular image part,
-                              ],
-                            ),
-                          );
-                        });
-                  });
+                                margin: EdgeInsets.only(top: 66.0),
+                                decoration: new BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 10.0,
+                                      offset: const Offset(0.0, 10.0),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize
+                                      .min, // To make the card compact
+                                  children: <Widget>[
+                                    Text(
+                                      '+1🍦',
+                                      style: TextStyle(
+                                          fontSize: 50.0,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.red),
+                                    ),
+                                    SizedBox(height: 16.0),
+                                    Text(
+                                      'You have won one Ice Cream, Answer correctly to gain more ice creams',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                     SizedBox(height: 16.0),
+                                    Text(
+                                      data['title'],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 35.0,
+                                        color: Colors.blueAccent,
+                                      ),
+                                    ),
+                                    SizedBox(height: 24.0),
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); 
+                                               setState(() {
+                                            ctrl.nextPage(duration: Duration(milliseconds: 500), curve: Curves.easeOutQuint,);
+                                          });// To close the dialog
+                                        },
+                                        child: Text(
+                                          'Okay',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              Positioned(
+                                left: 16.0,
+                                right: 16.0,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.blueAccent,
+                                  radius: 66.0,
+                                  backgroundImage:
+                                      AssetImage('images/ice_cream.jpg'),
+                                ),
+                              ),
+                              //...top circlular image part,
+                            ],
+                          ),
+                        );
+                      });
                 },
               ),
             ),
@@ -431,7 +400,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
                                         fontSize: 16.0,
                                       ),
                                     ),
-                                    SizedBox(height: 16.0),
+                                     SizedBox(height: 16.0),
                                     Text(
                                       data['title'],
                                       textAlign: TextAlign.center,
@@ -445,14 +414,11 @@ class _CharSelectPageState extends State<CharSelectPage> {
                                       alignment: Alignment.bottomRight,
                                       child: FlatButton(
                                         onPressed: () {
-                                          Navigator.of(context).pop();
-                                          setState(() {
-                                            ctrl.nextPage(
-                                              duration:
-                                                  Duration(milliseconds: 500),
-                                              curve: Curves.easeOutQuint,
-                                            );
-                                          }); // To close the dialog
+                                          Navigator.of(context)
+                                              .pop(); 
+                                               setState(() {
+                                            ctrl.nextPage(duration: Duration(milliseconds: 500), curve: Curves.easeOutQuint,);
+                                          });// To close the dialog
                                         },
                                         child: Text(
                                           'Okay',
