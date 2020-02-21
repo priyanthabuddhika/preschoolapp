@@ -1,20 +1,19 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:preschool_app/services/database_helper.dart';
 
-class CharSelectPage extends StatefulWidget {
+class WordSelectPage extends StatefulWidget {
   final String name;
   final String lesson;
-  CharSelectPage({Key key, this.lesson, this.name}) : super(key: key);
+  WordSelectPage({Key key, this.lesson, this.name}) : super(key: key);
 
   @override
-  _CharSelectPageState createState() => _CharSelectPageState(lesson,name);
+  _WordSelectPageState createState() => _WordSelectPageState(lesson,name);
 }
 
-class _CharSelectPageState extends State<CharSelectPage> {
+class _WordSelectPageState extends State<WordSelectPage> {
   final String name;
   final String lesson;
   final DatabaseHelper dbHelper = new DatabaseHelper();
@@ -26,7 +25,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
   // Keep track of current page to avoid unnecessary renders
   int currentPage = 0;
 
-  _CharSelectPageState(this.lesson, this.name);
+  _WordSelectPageState(this.lesson, this.name);
 
   @override
   void initState() {
@@ -91,23 +90,24 @@ class _CharSelectPageState extends State<CharSelectPage> {
     // Animated Properties
     final double blur = active ? 30 : 0;
     final double offset = active ? 20 : 0;
-    final double top = active ? 100 : 200;
-    List<Widget> buttonList = [
+    final double top = active ? 50 : 150;
+
+    List<Widget> widgetList = [
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
           color: Colors.blue[200],
           child: Text(
-            getChar(data['title']),
+            randomWord(),
             style: TextStyle(
               fontSize: 25.0,
             ),
           ),
-          onPressed: () {
+         onPressed: () {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
-                  "Saman", 2, lesson, currentPage.toString(), 0);
+                  "Saman", 3, lesson, currentPage.toString(), 0);
             }
 
             getCount().then((value) {
@@ -211,22 +211,21 @@ class _CharSelectPageState extends State<CharSelectPage> {
                     );
                   });
             });
-          },
-        ),
+          },),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
           color: Colors.blue[200],
           child: Text(
-            splitchar(data['title']),
+            data['title'],
             style: TextStyle(fontSize: 25.0),
           ),
-          onPressed: () {
+         onPressed: () {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
-                  "Saman", 2, lesson, currentPage.toString(), 1);
+                  "Saman", 3, lesson, currentPage.toString(), 1);
             }
 
             getCount().then((value) {
@@ -330,118 +329,129 @@ class _CharSelectPageState extends State<CharSelectPage> {
                   });
             });
           },
-        ),
+          ),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
           color: Colors.blue[200],
           child: Text(
-            getChartwo(data['title']),
+            randomWord(),
             style: TextStyle(fontSize: 25.0),
           ),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    elevation: 0.0,
-                    backgroundColor: Colors.transparent,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(
-                            top: 82.0,
-                            bottom: 16.0,
-                            left: 16.0,
-                            right: 16.0,
-                          ),
-                          margin: EdgeInsets.only(top: 66.0),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(16.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 10.0,
-                                offset: const Offset(0.0, 10.0),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisSize:
-                                MainAxisSize.min, // To make the card compact
-                            children: <Widget>[
-                              Text(
-                                '-1🍦',
-                                style: TextStyle(
-                                    fontSize: 50.0,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.red),
-                              ),
-                              SizedBox(height: 16.0),
-                              Text(
-                                'You have lost one Ice Cream, Answer correctly to gain ice creams',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16.0,
+        onPressed: () {
+            var count;
+            Future getCount() async {
+              count = await dbHelper.updateMark(
+                  "Saman", 3, lesson, currentPage.toString(), 0);
+            }
+
+            getCount().then((value) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      elevation: 0.0,
+                      backgroundColor: Colors.transparent,
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(
+                              top: 82.0,
+                              bottom: 16.0,
+                              left: 16.0,
+                              right: 16.0,
+                            ),
+                            margin: EdgeInsets.only(top: 66.0),
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 10.0,
+                                  offset: const Offset(0.0, 10.0),
                                 ),
-                              ),
-                              SizedBox(height: 16.0),
-                              Text(
-                                data['title'],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 35.0,
-                                  color: Colors.blueAccent,
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisSize:
+                                  MainAxisSize.min, // To make the card compact
+                              children: <Widget>[
+                                Text(
+                                  //'-1🍦',
+                                  "$count",
+                                  style: TextStyle(
+                                      fontSize: 50.0,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.red),
                                 ),
-                              ),
-                              SizedBox(height: 24.0),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    setState(() {
-                                      ctrl.nextPage(
-                                        duration: Duration(milliseconds: 500),
-                                        curve: Curves.easeOutQuint,
-                                      );
-                                    }); // To close the dialog
-                                  },
-                                  child: Text(
-                                    'Okay',
-                                    style: TextStyle(color: Colors.red),
+                                SizedBox(height: 16.0),
+                                Text(
+                                  'You have lost one Ice Cream, Answer correctly to gain ice creams',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
                                   ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 16.0),
+                                Text(
+                                  data['title'],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 35.0,
+                                    color: Colors.blueAccent,
+                                  ),
+                                ),
+                                SizedBox(height: 24.0),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      setState(() {
+                                        ctrl.nextPage(
+                                          duration: Duration(milliseconds: 900),
+                                          curve: Curves.easeOutQuint,
+                                        );
+                                      });
+                                      // To close the dialog
+                                    },
+                                    child: Text(
+                                      'Okay',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
 
-                        Positioned(
-                          left: 16.0,
-                          right: 16.0,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.blueAccent,
-                            radius: 66.0,
-                            backgroundImage: AssetImage('images/ice_cream.jpg'),
+                          Positioned(
+                            left: 16.0,
+                            right: 16.0,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.blueAccent,
+                              radius: 66.0,
+                              backgroundImage:
+                                  AssetImage('images/ice_cream.jpg'),
+                            ),
                           ),
-                        ),
-                        //...top circlular image part,
-                      ],
-                    ),
-                  );
-                });
-          },
-        ),
+                          //...top circlular image part,
+                        ],
+                      ),
+                    );
+                  });
+            });
+          },),
       ),
     ];
-    buttonList.shuffle();
+    widgetList.shuffle();
+
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
       curve: Curves.easeOutQuint,
@@ -457,7 +467,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                'Select the correct letter ',
+                'Select the correct word',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
             ),
@@ -473,18 +483,14 @@ class _CharSelectPageState extends State<CharSelectPage> {
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
-            Text(
-              blankTxt(data['title']),
-              style: TextStyle(fontSize: 40.0),
-            ),
             Divider(
               thickness: 1.5,
               indent: 15.0,
               endIndent: 15.0,
             ),
-            buttonList[0],
-            buttonList[1],
-            buttonList[2],
+            widgetList[0],
+            widgetList[1],
+            widgetList[2],
           ],
         ),
       ),
@@ -498,14 +504,104 @@ class _CharSelectPageState extends State<CharSelectPage> {
     );
   }
 
-  String splitchar(String text) {
-    String char = text[0];
-    return char;
-  }
-
-  String getChar(String text) {
-    String char = text[1];
-    return char.toUpperCase();
+  String randomWord() {
+    List words = [
+      'Apple',
+      'Ball',
+      'Cat',
+      'Dog',
+      'Elephant',
+      'Fish',
+      'Grapes',
+      'Home',
+      'Ice Cream',
+      'Jug',
+      'Kite',
+      'Lion',
+      'Mango',
+      'Nest',
+      'Orange',
+      'Parrot',
+      'Queen',
+      'Rat',
+      'Sun',
+      'Tiger',
+      'Umbrella',
+      'Van',
+      'Watch',
+      'Xylophone',
+      'Yak',
+      'Zebra',
+      'Zero',
+      'One',
+      'Two',
+      'Three',
+      'Four',
+      'Five',
+      'Six',
+      'Seven',
+      'Eight',
+      'Nine',
+      'Ten',
+      'Black',
+      'White',
+      'Yellow',
+      'Blue',
+      'Brown',
+      'Gray',
+      'Green',
+      'Orange',
+      'Pink',
+      'Purple',
+      'Red',
+      'Lion',
+      'Parrot',
+      'Rat',
+      'Tiger',
+      'Yak',
+      'Zebra',
+      'Cat',
+      'Dog',
+      'Fish',
+      'Tuk-Tuk',
+      'Bus',
+      'Car',
+      'Airplane',
+      'Bicycle',
+      'Motor Bike',
+      'Helicopter',
+      'Jeep',
+      'Train',
+      'Circle',
+      'Triangel',
+      'Eclipse',
+      'Square',
+      'Brother',
+      'Father',
+      'Uncle',
+      'Grand Father',
+      'Sister',
+      'Aunty',
+      'Mother',
+      'Grand Mother'
+          'Neck',
+      'Ear',
+      'Hand',
+      'Nose',
+      'Eye',
+      'Leg',
+      'Mouth',
+      'Pen',
+      'Pencil',
+      'Wire',
+      'Desk',
+      'Chair',
+      'Watch'
+    ];
+    Random random = new Random();
+    print(words.length);
+    int count = random.nextInt(90);
+    return words[count];
   }
 
   String getChartwo(String text) {
@@ -516,9 +612,5 @@ class _CharSelectPageState extends State<CharSelectPage> {
     } else {
       return alphabet[++rand];
     }
-  }
-
-  String blankTxt(String text) {
-    return '_' + text.substring(1);
   }
 }

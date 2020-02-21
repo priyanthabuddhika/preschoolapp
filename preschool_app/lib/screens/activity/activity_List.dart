@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/child.dart';
@@ -9,6 +11,7 @@ import 'package:preschool_app/screens/activity/level3.dart';
 import 'package:preschool_app/screens/activity/selectchild.dart';
 import 'package:preschool_app/screens/drawer/sidebar.dart';
 import 'package:preschool_app/screens/drawer/bottombar.dart';
+import 'package:preschool_app/services/database.dart';
 import 'package:preschool_app/services/database_helper.dart';
 import 'package:provider/provider.dart';
 
@@ -29,13 +32,21 @@ class _ActivityListState extends State<ActivityList> {
   final DatabaseHelper dbHelper = new DatabaseHelper();
   final uID;
   List lessons; // Lesson List
+  String name = '';
+
   _ActivityListState(this.uID);
   @override
   void initState() {
+    
+   
+    DatabaseService().getStringValuesSF().then((onValue) {
+      print('jdjklj' + onValue);
+      updateName(onValue);
+    });
     lessons = getLessons();
     super.initState();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     final children = Provider.of<List<Child>>(
@@ -208,6 +219,11 @@ class _ActivityListState extends State<ActivityList> {
               label: Text(''),
               onPressed: () {
                 _showChildSelectMenu();
+                setState(() {});
+                DatabaseService().getStringValuesSF().then((onValue) {
+                  print('jdjklj' + onValue);
+                  updateName(onValue);
+                });
               },
             )
           ],
@@ -219,9 +235,7 @@ class _ActivityListState extends State<ActivityList> {
           onPressed: () {
             var count;
             Future getCount() async {
-              count = await dbHelper.getMark(
-                "Saman"
-              );
+              count = await dbHelper.getMark(name);
             }
 
             getCount().then((value) {
@@ -261,28 +275,27 @@ class _ActivityListState extends State<ActivityList> {
                                   MainAxisSize.min, // To make the card compact
                               children: <Widget>[
                                 Text(
-                                 // '20🍦',
-                                  "$count",
+                                  '$count🍦',
                                   style: TextStyle(
-                                      fontSize: 30.0,
+                                      fontSize: 50.0,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.pink),
+                                      color: Colors.red),
                                 ),
                                 SizedBox(height: 16.0),
                                 Text(
-                                  'You have 20 Ice Creams, cool! Learn more lessons to get more.',
+                                  'Congratulations $name, You have $count Ice Creams! ',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 16.0,
                                   ),
                                 ),
+                                SizedBox(height: 16.0),
                                 SizedBox(height: 24.0),
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: FlatButton(
                                     onPressed: () {
-                                      Navigator.of(context)
-                                          .pop(); // To close the dialog
+                                      Navigator.of(context).pop();
                                     },
                                     child: Text(
                                       'Okay',
@@ -317,6 +330,12 @@ class _ActivityListState extends State<ActivityList> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
+  }
+
+  void updateName(String name) {
+    setState(() {
+      this.name = name;
+    });
   }
 }
 

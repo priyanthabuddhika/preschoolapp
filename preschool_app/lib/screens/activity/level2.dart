@@ -3,13 +3,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/lesson.dart';
 import 'package:preschool_app/screens/activity/char_selecter.dart';
 import 'package:preschool_app/screens/activity/detail_page.dart';
-import 'package:preschool_app/screens/drawer/sidebar.dart';
-import 'package:preschool_app/screens/drawer/bottombar.dart';
+import 'package:preschool_app/services/database.dart';
 
 // Lesson list class UI
 class LevelTwoActivity extends StatefulWidget {
   final String uid;
-
   LevelTwoActivity({
     Key key,
     @required this.uid,
@@ -21,9 +19,15 @@ class LevelTwoActivity extends StatefulWidget {
 
 class _LevelTwoActivityState extends State<LevelTwoActivity> {
   List lessons; // Lesson List
+  String name;
 
+  _LevelTwoActivityState();
   @override
   void initState() {
+    DatabaseService().getStringValuesSF().then((onValue) {
+      print('jdjklj' + onValue);
+      updateName(onValue);
+    });
     lessons = getLessons();
     super.initState();
   }
@@ -74,13 +78,18 @@ class _LevelTwoActivityState extends State<LevelTwoActivity> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          CharSelectPage(lesson: lesson.title)));
+                      builder: (context) => CharSelectPage(
+                            lesson: lesson.title,
+                            name: name,
+                          )));
             } else {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DetailPage(lesson: lesson.title)));
+                      builder: (context) => DetailPage(
+                            lesson: lesson.title,
+                            name: name,
+                          )));
             }
           },
         );
@@ -112,7 +121,6 @@ class _LevelTwoActivityState extends State<LevelTwoActivity> {
       ),
     );
 
-    final makeBottom = BottomBar();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -126,98 +134,13 @@ class _LevelTwoActivityState extends State<LevelTwoActivity> {
         centerTitle: true,
       ),
       body: makeBody,
-      bottomNavigationBar: makeBottom,
-      drawer: SideBar('Activity'),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  elevation: 0.0,
-                  backgroundColor: Colors.transparent,
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(
-                          top: 82.0,
-                          bottom: 16.0,
-                          left: 16.0,
-                          right: 16.0,
-                        ),
-                        margin: EdgeInsets.only(top: 66.0),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(16.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 10.0,
-                              offset: const Offset(0.0, 10.0),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisSize:
-                              MainAxisSize.min, // To make the card compact
-                          children: <Widget>[
-                            Text(
-                              '20🍦',
-                              style: TextStyle(
-                                  fontSize: 30.0,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.pink),
-                            ),
-                            SizedBox(height: 16.0),
-                            Text(
-                              'You have 20 Ice Creams, cool! Learn more lessons to get more.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            SizedBox(height: 24.0),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(); // To close the dialog
-                                },
-                                child: Text(
-                                  'Okay',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Positioned(
-                        left: 16.0,
-                        right: 16.0,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.blueAccent,
-                          radius: 66.0,
-                          backgroundImage: AssetImage('images/ice_cream.jpg'),
-                        ),
-                      ),
-                      //...top circlular image part,
-                    ],
-                  ),
-                );
-              });
-        },
-        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-        child: Icon(Icons.fastfood),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  void updateName(String name) {
+    setState(() {
+      this.name = name;
+    });
   }
 }
 
@@ -230,7 +153,7 @@ List getLessons() {
       icon: FontAwesomeIcons.question,
       color: Colors.teal,
     ),
-     Lesson(
+    Lesson(
         title: "Numbers",
         level: "Level 2",
         indicatorValue: 0.33,
@@ -242,19 +165,19 @@ List getLessons() {
         indicatorValue: 0.33,
         icon: FontAwesomeIcons.question,
         color: Colors.teal),
-      Lesson(
+    Lesson(
         title: "Animals",
         level: "Level 2",
         indicatorValue: 0.33,
         icon: FontAwesomeIcons.question,
         color: Colors.teal),
-     Lesson(
+    Lesson(
         title: "Vehicles",
         level: "Level 2",
         indicatorValue: 0.33,
         icon: FontAwesomeIcons.question,
         color: Colors.teal),
-     Lesson(
+    Lesson(
         title: "Shapes",
         level: "Level 2",
         indicatorValue: 0.33,
@@ -266,7 +189,7 @@ List getLessons() {
         indicatorValue: 0.33,
         icon: FontAwesomeIcons.question,
         color: Colors.teal),
-     Lesson(
+    Lesson(
         title: "Body Parts",
         level: "Level 2",
         indicatorValue: 0.33,

@@ -271,17 +271,5 @@ List getGames() {
       indicatorValue: 0.7,
     ),
 
-    GameModel(
-      title: 'Color Match',
-      level: 'Level 2',
-      icon: FontAwesomeIcons.pallet,
-      indicatorValue: 0.4,
-    ),
-    GameModel(
-      title: 'Scratch',
-      level: 'Level 2',
-      icon: FontAwesomeIcons.sprayCan,
-      indicatorValue: 0.5,
-    ),
   ];
 }

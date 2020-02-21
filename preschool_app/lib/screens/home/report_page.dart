@@ -3,9 +3,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:preschool_app/services/database_helper.dart';
 
 class ReportPage extends StatefulWidget {
-  static final String path = "lib/src/pages/dashboard/dash3.dart";
   final String childName;
   final String childAge;
   ReportPage(this.childName, this.childAge);
@@ -14,12 +14,39 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
+  DatabaseHelper dbHelper;
   final TextStyle whiteText = TextStyle(color: Colors.white);
   final String name;
   final String age;
+
+  double fullMark = 0;
+  int lessonCount = 0;
+  String overall = "";
   _ReportPageState(this.name, this.age);
   @override
   void initState() {
+    dbHelper = new DatabaseHelper();
+    var mark = 0;
+    Future getCount() async {
+      mark = await dbHelper.getMark(name);
+    }
+
+    getCount().then((vlaue) {
+      lessonCount = mark;
+      double value = mark / 258;
+      fullMark = double.parse((value).toStringAsFixed(1));
+      setState(() {
+        if (fullMark < 0.4) {
+          overall = "Normal";
+        } else if (fullMark < 0.7) {
+          overall = "Good";
+        } else {
+          overall = "Super";
+        }
+        print('ldfj' + fullMark.toString());
+      });
+    });
+
     // TODO: implement initState
     super.initState();
   }
@@ -33,6 +60,7 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _buildBody(BuildContext context) {
+    double precentage = fullMark * 100;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,110 +96,27 @@ class _ReportPageState extends State<ReportPage> {
                     child: SizedBox(
                       height: 40.0,
                       child: LinearProgressIndicator(
-
                           backgroundColor: Color.fromRGBO(209, 224, 224, 0.3),
-                          value: 0.3,
+                          value: fullMark,
                           valueColor: AlwaysStoppedAnimation(Colors.yellow)),
                     ),
                   ),
                   VerticalDivider(),
-                  Expanded(flex: 2,
-                  child: Text('20%',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),)
+                  Expanded(
+                    flex: 2,
+                    child: Text('$precentage %',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18.0)),
+                  )
                 ],
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 16.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 16.0),
             child: Text(
               "Points",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-            ),
-          ),
-          Card(
-            elevation: 4.0,
-            color: Colors.white,
-            margin: const EdgeInsets.all(16.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: ListTile(
-                    leading: Container(
-                      alignment: Alignment.bottomCenter,
-                      width: 45.0,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            height: 20,
-                            width: 8.0,
-                            color: Colors.grey.shade300,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Container(
-                            height: 25,
-                            width: 8.0,
-                            color: Colors.grey.shade300,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Container(
-                            height: 40,
-                            width: 8.0,
-                            color: Colors.blue,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Container(
-                            height: 30,
-                            width: 8.0,
-                            color: Colors.grey.shade300,
-                          ),
-                        ],
-                      ),
-                    ),
-                    title: Text("Today"),
-                    subtitle: Text("18 Marks"),
-                  ),
-                ),
-                VerticalDivider(),
-                Expanded(
-                  child: ListTile(
-                    leading: Container(
-                      alignment: Alignment.bottomCenter,
-                      width: 45.0,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            height: 20,
-                            width: 8.0,
-                            color: Colors.grey.shade300,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Container(
-                            height: 25,
-                            width: 8.0,
-                            color: Colors.grey.shade300,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Container(
-                            height: 40,
-                            width: 8.0,
-                            color: Colors.red,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Container(
-                            height: 30,
-                            width: 8.0,
-                            color: Colors.grey.shade300,
-                          ),
-                        ],
-                      ),
-                    ),
-                    title: Text("Lost"),
-                    subtitle: Text('7 Points'),
-                  ),
-                ),
-              ],
             ),
           ),
           Padding(
@@ -184,7 +129,7 @@ class _ReportPageState extends State<ReportPage> {
                     color: Colors.pink,
                     icon: FontAwesomeIcons.tasks,
                     title: "Number of lessons learned",
-                    data: "120",
+                    data: "$lessonCount",
                   ),
                 ),
                 const SizedBox(width: 16.0),
@@ -227,7 +172,7 @@ class _ReportPageState extends State<ReportPage> {
                     color: Colors.blue,
                     icon: FontAwesomeIcons.artstation,
                     title: "Overall",
-                    data: "Good",
+                    data: "$overall",
                   ),
                 ),
               ],

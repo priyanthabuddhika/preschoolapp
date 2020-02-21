@@ -91,10 +91,16 @@ class DatabaseHelper {
     Future<int> getMark(String name) async {
      var db = await this.getdatabase;
      var count = await db.rawQuery('SELECT SUM(`Marks`) as m FROM $repoTable WHERE `Name`="$name"');
-    print(count[0]['m']);
+   
     return count[0]['m'];
   }
+  Future<List> getFullMark(String name) async {
+     var db = await this.getdatabase;
+      var count = await db.rawQuery('SELECT Lesson as l, SUM(`Marks`) as m FROM $repoTable  WHERE `Name`="$name" GROUP BY `Lesson` ');
 
+      return count;
+  }
+  
   void _createDb(Database db, int newVersion) async {
     await db.execute(
         //  'CREATE TABLE $reportTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colName TEXT, $colMarks INTEGER, $colLetters INTEGER, $colNumbers INTEGER, $colColors INTEGER, $colShapes INTEGER, $colVehicles INTEGER, $colAnimals INTEGER, $colRelatives INTEGER, $colBodyParts INTEGER)'

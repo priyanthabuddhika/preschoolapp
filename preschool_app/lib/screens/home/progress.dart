@@ -1,18 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/lesson.dart';
+import 'package:preschool_app/services/database_helper.dart';
+
 // Selected child profile // TODO Get selected child and fetch data from the database to show child progress
 class Progress extends StatefulWidget {
+  final String name;
+
+  const Progress({Key key, this.name}) : super(key: key);
   @override
-  _ProgressState createState() => _ProgressState();
+  _ProgressState createState() => _ProgressState(name);
 }
 
 class _ProgressState extends State<Progress> {
+  DatabaseHelper dbHelper = new DatabaseHelper();
   List lessons;
+  final String name;
+  List markList;
+  var list = new Map();
 
+  _ProgressState(this.name);
   @override
   void initState() {
     lessons = getLessons();
+    Future getMark() async {
+      markList = await dbHelper.getFullMark(name);
+    }
+
+    getMark().then((value) {
+      print(markList);
+      int count = 0; 
+      for (Lesson l in lessons){
+      
+        print(l.title);
+        for (var i in markList) {
+          if(i['l'] == l.title){
+            double value= double.parse((i['m']/l.noQuestions).toStringAsFixed(1));
+            l.indicatorValue = value;
+            lessons[count] = l; 
+            print("hhj"+(l.indicatorValue).toString());
+          }
+      }
+      count++;
+      }
+      print(lessons[0].indicatorValue.toString());
+      print(list);
+      setState(() {
+        
+      });
+    });
+
+
+
     super.initState();
   }
 
@@ -39,18 +78,22 @@ class _ProgressState extends State<Progress> {
             children: <Widget>[
               Expanded(
                   child: SizedBox(
-                    height: 25.0,
-                    // tag: 'hero',
-                    child: LinearProgressIndicator(
-                        backgroundColor: Color.fromRGBO(209, 224, 224, 0.3),
-                        value: lesson.indicatorValue,
-                        valueColor: AlwaysStoppedAnimation(Colors.yellow)),
-                  )),
-
+                height: 25.0,
+                // tag: 'hero',
+                child: LinearProgressIndicator(
+                    backgroundColor: Color.fromRGBO(209, 224, 224, 0.3),
+                    value: lesson.indicatorValue,
+                    valueColor: AlwaysStoppedAnimation(Colors.yellow)),
+              )),
             ],
           ),
-          trailing:
-              Text('16%',style: TextStyle(fontSize: 30.0,fontWeight: FontWeight.bold, color: Colors.white),),
+          trailing: Text(
+            (lesson.indicatorValue*100).toString(),
+            style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+          ),
         );
 
     Card _makeCard(Lesson lesson) => Card(
@@ -101,51 +144,59 @@ List getLessons() {
   return [
     Lesson(
       title: "Letters",
-      indicatorValue: 0.33,
+      indicatorValue: 0,
       icon: FontAwesomeIcons.adn,
       color: Color.fromRGBO(255, 91, 123, 1),
+      noQuestions: 78,
     ),
     Lesson(
       title: "Numbers",
-      indicatorValue: 0.33,
+      indicatorValue: 0,
       icon: FontAwesomeIcons.sortNumericUp,
-      color: Color.fromRGBO(114,238,255,1),
+      color: Color.fromRGBO(114, 238, 255, 1),
+      noQuestions: 30,
     ),
     Lesson(
       title: "Colours",
-      indicatorValue: 0.66,
+      indicatorValue: 0,
       icon: FontAwesomeIcons.pallet,
-       color: Color.fromRGBO(158,227,115,1),
+      color: Color.fromRGBO(158, 227, 115, 1),
+      noQuestions: 33,
     ),
     Lesson(
       title: "Animals",
-      indicatorValue: 0.66,
+      indicatorValue: 0,
       icon: FontAwesomeIcons.cat,
-       color: Color.fromRGBO(37,238,214,1),
+      color: Color.fromRGBO(37, 238, 214, 1),
+      noQuestions: 30,
     ),
     Lesson(
       title: "Vehicles",
-      indicatorValue: 1.0,
+      indicatorValue: 0,
       icon: FontAwesomeIcons.truck,
-       color: Color.fromRGBO(189,255,189,1),
+      color: Color.fromRGBO(189, 255, 189, 1),
+      noQuestions: 30,
     ),
     Lesson(
       title: "Shapes",
-      indicatorValue: 1.0,
+      indicatorValue: 0,
       icon: FontAwesomeIcons.shapes,
-       color: Color.fromRGBO(74,202,187,1),
+      color: Color.fromRGBO(74, 202, 187, 1),
+      noQuestions: 12,
     ),
     Lesson(
       title: "Relatives",
-      indicatorValue: 1.0,
+      indicatorValue: 0,
       icon: FontAwesomeIcons.restroom,
-       color: Color.fromRGBO(255,196,180,1),
+      color: Color.fromRGBO(255, 196, 180, 1),
+      noQuestions: 24,
     ),
     Lesson(
       title: "Body Parts",
-      indicatorValue: 1.0,
+      indicatorValue: 0,
       icon: FontAwesomeIcons.male,
-       color: Color.fromRGBO(255,171,226,1),
+      color: Color.fromRGBO(255, 171, 226, 1),
+      noQuestions: 21,
     )
   ];
 }

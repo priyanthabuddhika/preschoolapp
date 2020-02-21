@@ -153,11 +153,10 @@ class ChildTile extends StatelessWidget {
                       ),
                       onPressed: () {
                         print('Test worked');
-
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Progress(),
+                            builder: (context) => Progress(name: name,),
                           ),
                         );
                       },
