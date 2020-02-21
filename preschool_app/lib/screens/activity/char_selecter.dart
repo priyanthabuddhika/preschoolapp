@@ -11,7 +11,7 @@ class CharSelectPage extends StatefulWidget {
   CharSelectPage({Key key, this.lesson, this.name}) : super(key: key);
 
   @override
-  _CharSelectPageState createState() => _CharSelectPageState(lesson,name);
+  _CharSelectPageState createState() => _CharSelectPageState(lesson, name);
 }
 
 class _CharSelectPageState extends State<CharSelectPage> {
@@ -54,6 +54,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
         List slideList = snap.data.toList();
 
         return Scaffold(
+          backgroundColor: Color.fromRGBO(191, 247, 253, 1.0),
           body: PageView.builder(
             controller: ctrl,
             itemCount: slideList.length,
@@ -90,18 +91,16 @@ class _CharSelectPageState extends State<CharSelectPage> {
   Widget _buildStoryPage(Map data, bool active) {
     // Animated Properties
     final double blur = active ? 30 : 0;
-    final double offset = active ? 20 : 0;
+    final double offset = active ? 10 : 0;
     final double top = active ? 100 : 200;
     List<Widget> buttonList = [
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
-          color: Colors.blue[200],
+          color: Colors.green,
           child: Text(
             getChar(data['title']),
-            style: TextStyle(
-              fontSize: 25.0,
-            ),
+            style: TextStyle(fontSize: 25.0, color: Colors.white),
           ),
           onPressed: () {
             var count;
@@ -217,10 +216,10 @@ class _CharSelectPageState extends State<CharSelectPage> {
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
-          color: Colors.blue[200],
+          color: Colors.green,
           child: Text(
             splitchar(data['title']),
-            style: TextStyle(fontSize: 25.0),
+            style: TextStyle(fontSize: 25.0, color: Colors.white),
           ),
           onPressed: () {
             var count;
@@ -335,10 +334,10 @@ class _CharSelectPageState extends State<CharSelectPage> {
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
-          color: Colors.blue[200],
+          color: Colors.green,
           child: Text(
             getChartwo(data['title']),
-            style: TextStyle(fontSize: 25.0),
+            style: TextStyle(fontSize: 25.0, color: Colors.white),
           ),
           onPressed: () {
             showDialog(
@@ -454,23 +453,42 @@ class _CharSelectPageState extends State<CharSelectPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text(
-                'Select the correct letter ',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Divider(
-              thickness: 1.5,
-              indent: 15.0,
-              endIndent: 15.0,
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                      color: Color.fromRGBO(34, 161, 223, 1.0),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          'Select correct letter ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Expanded(
-              child: CachedNetworkImage(
-                imageUrl: data['img'],
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: CachedNetworkImage(
+                  imageUrl: data['img'],
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
             ),
             Text(
@@ -491,7 +509,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
       decoration:
           BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
         BoxShadow(
-            color: Colors.black87,
+            color: Colors.black12,
             blurRadius: blur,
             offset: Offset(offset, offset))
       ]),

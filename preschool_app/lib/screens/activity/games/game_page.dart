@@ -145,12 +145,12 @@ class _GamesState extends State<Games> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+          backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: new IconThemeData(color: Colors.white),
+          iconTheme: new IconThemeData(color: Colors.black),
           title: Text(
             "Games",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
         ),
@@ -240,8 +240,8 @@ class _GamesState extends State<Games> {
                   );
                 });
           },
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-          child: Icon(Icons.fastfood),
+          backgroundColor: Colors.white,
+          child: Icon(Icons.fastfood,color: Color.fromRGBO(255, 91, 123, 1)),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),

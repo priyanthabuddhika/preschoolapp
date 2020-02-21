@@ -10,7 +10,7 @@ class WordSelectPage extends StatefulWidget {
   WordSelectPage({Key key, this.lesson, this.name}) : super(key: key);
 
   @override
-  _WordSelectPageState createState() => _WordSelectPageState(lesson,name);
+  _WordSelectPageState createState() => _WordSelectPageState(lesson, name);
 }
 
 class _WordSelectPageState extends State<WordSelectPage> {
@@ -53,6 +53,7 @@ class _WordSelectPageState extends State<WordSelectPage> {
         List slideList = snap.data.toList();
 
         return Scaffold(
+          backgroundColor: Color.fromRGBO(255, 228, 221, 1.0),
           body: PageView.builder(
             controller: ctrl,
             itemCount: slideList.length,
@@ -89,21 +90,23 @@ class _WordSelectPageState extends State<WordSelectPage> {
   Widget _buildStoryPage(Map data, bool active) {
     // Animated Properties
     final double blur = active ? 30 : 0;
-    final double offset = active ? 20 : 0;
+    final double offset = active ? 10 : 0;
     final double top = active ? 50 : 150;
 
     List<Widget> widgetList = [
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
-          color: Colors.blue[200],
+          color: Colors.green,
           child: Text(
+
             randomWord(),
             style: TextStyle(
+              color: Colors.white,
               fontSize: 25.0,
             ),
           ),
-         onPressed: () {
+          onPressed: () {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
@@ -211,17 +214,19 @@ class _WordSelectPageState extends State<WordSelectPage> {
                     );
                   });
             });
-          },),
+          },
+        ),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
-          color: Colors.blue[200],
+          color: Colors.green,
           child: Text(
             data['title'],
-            style: TextStyle(fontSize: 25.0),
+            style: TextStyle(fontSize: 25.0,
+            color: Colors.white),
           ),
-         onPressed: () {
+          onPressed: () {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
@@ -329,17 +334,18 @@ class _WordSelectPageState extends State<WordSelectPage> {
                   });
             });
           },
-          ),
+        ),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
         child: FlatButton(
-          color: Colors.blue[200],
+          color: Colors.green,
           child: Text(
             randomWord(),
-            style: TextStyle(fontSize: 25.0),
+            style: TextStyle(fontSize: 25.0,
+            color: Colors.white),
           ),
-        onPressed: () {
+          onPressed: () {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
@@ -447,7 +453,8 @@ class _WordSelectPageState extends State<WordSelectPage> {
                     );
                   });
             });
-          },),
+          },
+        ),
       ),
     ];
     widgetList.shuffle();
@@ -464,23 +471,35 @@ class _WordSelectPageState extends State<WordSelectPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text(
-                'Select the correct word',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+                color: Color.fromRGBO(235, 135, 110, 1.0),
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Select correct word',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold,color: Colors.white),
+                  ),
+                ),
               ),
             ),
-            Divider(
-              thickness: 1.5,
-              indent: 15.0,
-              endIndent: 15.0,
-            ),
+           
             Expanded(
-              child: CachedNetworkImage(
-                imageUrl: data['img'],
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: CachedNetworkImage(
+                  imageUrl: data['img'],
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
             ),
             Divider(
@@ -497,7 +516,7 @@ class _WordSelectPageState extends State<WordSelectPage> {
       decoration:
           BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
         BoxShadow(
-            color: Colors.black87,
+            color: Colors.black12,
             blurRadius: blur,
             offset: Offset(offset, offset))
       ]),

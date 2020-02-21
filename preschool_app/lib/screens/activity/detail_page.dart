@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/services/database_helper.dart';
 import 'package:preschool_app/services/texttospeech.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -56,6 +57,7 @@ class _DetailPageState extends State<DetailPage> {
         List slideList = snap.data.toList();
 
         return Scaffold(
+          backgroundColor: Color.fromRGBO(232, 218, 253, 1.0),
           body: PageView.builder(
             controller: ctrl,
             itemCount: slideList.length,
@@ -92,7 +94,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget _buildStoryPage(Map data, bool active) {
     // Animated Properties
     final double blur = active ? 30 : 0;
-    final double offset = active ? 20 : 0;
+    final double offset = active ? 10 : 0;
     final double top = active ? 100 : 200;
 
     return AnimatedContainer(
@@ -107,23 +109,38 @@ class _DetailPageState extends State<DetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Text(
-                data['char'],
-                style: TextStyle(fontSize: 60.0),
-              ),
-            ),
-            Divider(
-              thickness: 1.5,
-              indent: 15.0,
-              endIndent: 15.0,
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                      color: Color.fromRGBO(121, 87, 172, 1.0),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          data['char'],
+                          style: TextStyle(fontSize: 60.0, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Expanded(
-              child: CachedNetworkImage(
-                imageUrl: data['img'],
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: CachedNetworkImage(
+                  imageUrl: data['img'],
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
             ),
             Text(
@@ -139,9 +156,13 @@ class _DetailPageState extends State<DetailPage> {
               padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 25.0),
               child: FlatButton(
                 color: Colors.green,
-                child: Text(
-                  'Listen',
-                  style: TextStyle(fontSize: 25.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Icon(
+                    FontAwesomeIcons.volumeUp,
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
                 ),
                 onPressed: () {
                   tts.speak(data['title']);
@@ -201,7 +222,7 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                         SizedBox(height: 16.0),
                                         Text(
-                                          'Congratulations $name, You have $mark Ice Creams! ', 
+                                          'Congratulations $name, You have $mark Ice Creams! ',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 16.0,
@@ -269,7 +290,7 @@ class _DetailPageState extends State<DetailPage> {
       decoration:
           BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
         BoxShadow(
-            color: Colors.black87,
+            color: Colors.black12,
             blurRadius: blur,
             offset: Offset(offset, offset))
       ]),

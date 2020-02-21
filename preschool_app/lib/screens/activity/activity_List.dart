@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/child.dart';
@@ -126,7 +124,7 @@ class _ActivityListState extends State<ActivityList> {
           elevation: 8.0,
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
           child: Container(
-            height: 120.0,
+            height: 150.0,
             decoration: BoxDecoration(
               color: lesson.color ?? Color.fromRGBO(150, 60, 80, 1.0),
               borderRadius: BorderRadius.circular(15),
@@ -202,19 +200,20 @@ class _ActivityListState extends State<ActivityList> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+          backgroundColor: Colors.transparent,
+          //backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
           elevation: 0,
-          iconTheme: new IconThemeData(color: Colors.white),
+          iconTheme: new IconThemeData(color: Colors.black),
           title: Text(
             "Lessons",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
           actions: <Widget>[
             FlatButton.icon(
               icon: Icon(
                 FontAwesomeIcons.userCircle,
-                color: Colors.white,
+                color: Colors.black,
               ),
               label: Text(''),
               onPressed: () {
@@ -259,7 +258,7 @@ class _ActivityListState extends State<ActivityList> {
                             ),
                             margin: EdgeInsets.only(top: 66.0),
                             decoration: new BoxDecoration(
-                              color: Colors.white,
+                              color: Color.fromRGBO(255, 235, 242, 1.0),
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.circular(16.0),
                               boxShadow: [
@@ -298,8 +297,10 @@ class _ActivityListState extends State<ActivityList> {
                                       Navigator.of(context).pop();
                                     },
                                     child: Text(
-                                      'Okay',
-                                      style: TextStyle(color: Colors.red),
+                                      'Ok',
+                                      style: TextStyle(color: Colors.red,
+                                      fontSize: 25.0),
+                                      
                                     ),
                                   ),
                                 ),
@@ -324,8 +325,8 @@ class _ActivityListState extends State<ActivityList> {
                   });
             });
           },
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-          child: Icon(Icons.fastfood),
+          backgroundColor: Colors.white, //Color.fromRGBO(58, 66, 86, 1.0),
+          child: Icon(Icons.fastfood,color: Color.fromRGBO(255, 91, 123, 1)),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
@@ -346,19 +347,21 @@ List getLessons() {
       level: "Easy",
       indicatorValue: 0.33,
       icon: FontAwesomeIcons.adn,
+      color: Color.fromRGBO(114, 238, 255, 1),
     ),
     Lesson(
       title: 'Level 2',
       level: 'Medium',
       indicatorValue: 0.5,
       icon: FontAwesomeIcons.question,
-      color: Colors.teal,
+      color: Color.fromRGBO(191, 148, 255, 1),
     ),
     Lesson(
       title: 'Level 3',
       level: 'Medium',
       indicatorValue: 0.5,
       icon: FontAwesomeIcons.question,
+      color: Color.fromRGBO(255, 196, 180, 1),
     )
   ];
 }

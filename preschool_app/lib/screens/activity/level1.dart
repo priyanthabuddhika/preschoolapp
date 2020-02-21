@@ -10,7 +10,7 @@ class LevelOneActivity extends StatefulWidget {
   final String uid;
   LevelOneActivity({
     Key key,
-    @required this.uid, 
+    @required this.uid,
   }) : super(key: key);
 
   @override
@@ -18,16 +18,15 @@ class LevelOneActivity extends StatefulWidget {
 }
 
 class _LevelOneActivityState extends State<LevelOneActivity> {
-  List lessons; 
+  List lessons;
   String name;
 
-  _LevelOneActivityState();// Lesson List
+  _LevelOneActivityState(); // Lesson List
 
   @override
   void initState() {
-      
-      DatabaseService().getStringValuesSF().then((onValue){
-      print('jdjklj'+onValue);
+    DatabaseService().getStringValuesSF().then((onValue) {
+      print('jdjklj' + onValue);
       updateName(onValue);
     });
     lessons = getLessons();
@@ -76,18 +75,13 @@ class _LevelOneActivityState extends State<LevelOneActivity> {
           trailing:
               Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
           onTap: () {
-            if (lesson.color != null) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CharSelectPage(lesson: lesson.title,name: name,)));
-            } else {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DetailPage(lesson: lesson.title, name: name,)));
-            }
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailPage(
+                          lesson: lesson.title,
+                          name: name,
+                        )));
           },
         );
 
@@ -120,19 +114,20 @@ class _LevelOneActivityState extends State<LevelOneActivity> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: new IconThemeData(color: Colors.white),
+        iconTheme: new IconThemeData(color: Colors.black),
         title: Text(
           "Level 1",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
       body: makeBody,
     );
   }
-   void updateName(String name) {
+
+  void updateName(String name) {
     setState(() {
       this.name = name;
     });
@@ -142,52 +137,53 @@ class _LevelOneActivityState extends State<LevelOneActivity> {
 List getLessons() {
   return [
     Lesson(
-      title: "Letters",
-      level: "Easy",
-      indicatorValue: 0.33,
-      icon: FontAwesomeIcons.adn,
-    ),
+        title: "Letters",
+        level: "Easy",
+        indicatorValue: 0.33,
+        icon: FontAwesomeIcons.adn,
+        color: Color.fromRGBO(37, 238, 214, 1.0)),
     Lesson(
-      title: "Numbers",
-      level: "Easy",
-      indicatorValue: 0.33,
-      icon: FontAwesomeIcons.sortNumericUp,
-    ),
+        title: "Numbers",
+        level: "Easy",
+        indicatorValue: 0.33,
+        icon: FontAwesomeIcons.sortNumericUp,
+        color: Color.fromRGBO(255, 91, 123, 1.0)),
     Lesson(
-      title: "Colours",
-      level: "Medium",
-      indicatorValue: 0.66,
-      icon: FontAwesomeIcons.pallet,
-    ),
+        title: "Colours",
+        level: "Medium",
+        indicatorValue: 0.66,
+        icon: FontAwesomeIcons.pallet,
+        color: Color.fromRGBO(114, 238, 255, 1.0)),
     Lesson(
-      title: "Animals",
-      level: "Medium",
-      indicatorValue: 0.66,
-      icon: FontAwesomeIcons.cat,
-    ),
+        title: "Animals",
+        level: "Medium",
+        indicatorValue: 0.66,
+        icon: FontAwesomeIcons.cat,
+        color: Color.fromRGBO(191, 148, 255, 1.0)),
     Lesson(
       title: "Vehicles",
       level: "Medium",
       indicatorValue: 1.0,
       icon: FontAwesomeIcons.truck,
+      color: Color.fromRGBO(255, 196, 180, 1.0),
     ),
     Lesson(
-      title: "Shapes",
-      level: "Medium",
-      indicatorValue: 1.0,
-      icon: FontAwesomeIcons.shapes,
-    ),
+        title: "Shapes",
+        level: "Medium",
+        indicatorValue: 1.0,
+        icon: FontAwesomeIcons.shapes,
+        color: Color.fromRGBO(255, 171, 226, 1.0)),
     Lesson(
-      title: "Relatives",
-      level: "Hard",
-      indicatorValue: 1.0,
-      icon: FontAwesomeIcons.restroom,
-    ),
+        title: "Relatives",
+        level: "Hard",
+        indicatorValue: 1.0,
+        icon: FontAwesomeIcons.restroom,
+        color: Color.fromRGBO(95, 113, 234, 1.0)),
     Lesson(
-      title: "Body Parts",
-      level: "Hard",
-      indicatorValue: 1.0,
-      icon: FontAwesomeIcons.male,
-    ),
+        title: "Body Parts",
+        level: "Hard",
+        indicatorValue: 1.0,
+        icon: FontAwesomeIcons.male,
+        color: Color.fromRGBO(74, 202, 187, 1.0)),
   ];
 }
