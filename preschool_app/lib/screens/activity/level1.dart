@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/lesson.dart';
-import 'package:preschool_app/screens/activity/char_selecter.dart';
 import 'package:preschool_app/screens/activity/detail_page.dart';
 import 'package:preschool_app/services/database.dart';
 

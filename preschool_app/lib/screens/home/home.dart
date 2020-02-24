@@ -41,8 +41,8 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         backgroundColor: Colors.white, //Colors.grey.shade800,
         // Top appbar properties
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+      appBar: AppBar(
+          backgroundColor:Color.fromRGBO(58, 66, 86, 1.0),
           elevation: 0,
           iconTheme: new IconThemeData(color: Colors.white),
           title: Text(
@@ -51,12 +51,12 @@ class _HomeState extends State<Home> {
           ),
           centerTitle: true,
         ),
-        // Side bar menu properties
+          // Side bar menu properties
         drawer: SideBar('Home'),
         body: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(16.0, 10.0,16.0,10.0),
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),

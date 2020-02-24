@@ -5,7 +5,6 @@ import 'package:preschool_app/services/auth.dart';
 // SideBar Drawer class
 
 class SideBar extends StatefulWidget {
-  // TODO Selected tab higlight
   final String selectedTab;
   SideBar(this.selectedTab);
 

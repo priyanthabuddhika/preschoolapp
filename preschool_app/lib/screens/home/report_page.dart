@@ -1,5 +1,4 @@
 // Child report class
-// TODO FETCH DATA FOR EACH CHILD
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -47,7 +46,6 @@ class _ReportPageState extends State<ReportPage> {
       });
     });
 
-    // TODO: implement initState
     super.initState();
   }
 
@@ -138,7 +136,7 @@ class _ReportPageState extends State<ReportPage> {
                     color: Colors.green,
                     icon: FontAwesomeIcons.gamepad,
                     title: "Games",
-                    data: "12",
+                    data: "3",
                   ),
                 ),
               ],

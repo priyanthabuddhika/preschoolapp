@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preschool_app/models/lesson.dart';
 import 'package:preschool_app/services/database_helper.dart';
 
-// Selected child profile // TODO Get selected child and fetch data from the database to show child progress
+// Selected child profile //
 class Progress extends StatefulWidget {
   final String name;
 

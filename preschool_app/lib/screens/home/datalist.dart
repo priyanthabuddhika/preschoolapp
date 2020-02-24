@@ -109,7 +109,7 @@ class ChildTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 20.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 16.0, 10.0),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -237,12 +237,15 @@ class ChildTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     ListTile(
-                      title: Text(
-                        name,
-                        style: Theme.of(context).textTheme.display1.copyWith(
-                              color: Colors.white,
-                              fontSize: 24.0,
-                            ),
+                      title: Padding(
+                        padding: const EdgeInsets.only(top:8.0),
+                        child: Text(
+                          name,
+                          style: Theme.of(context).textTheme.display1.copyWith(
+                                color: Colors.white,
+                                fontSize: 24.0,
+                              ),
+                        ),
                       ),
                       trailing: Icon(
                         FontAwesomeIcons.walking,

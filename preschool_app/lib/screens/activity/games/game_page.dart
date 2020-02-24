@@ -6,9 +6,9 @@ import 'package:preschool_app/models/game.dart';
 import 'package:preschool_app/screens/activity/games/dice.dart';
 import 'package:preschool_app/screens/activity/games/drag_drop.dart';
 import 'package:preschool_app/screens/activity/games/play.dart';
-import 'package:preschool_app/screens/activity/games/scratch.dart';
 import 'package:preschool_app/screens/drawer/bottombar.dart';
 import 'package:preschool_app/screens/drawer/sidebar.dart';
+import 'package:preschool_app/services/database_helper.dart';
 
 class Games extends StatefulWidget {
   @override
@@ -17,7 +17,8 @@ class Games extends StatefulWidget {
 
 class _GamesState extends State<Games> {
   List games;
-
+  final DatabaseHelper dbHelper = new DatabaseHelper();
+  String name = '';
   @override
   void initState() {
     games = getGames();
@@ -74,11 +75,6 @@ class _GamesState extends State<Games> {
               case 'Drag Drop':
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => DragDrop()));
-                break;
-             
-              case 'Scratch':
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ScratchGame()));
                 break;
               case 'Play':
                 Navigator.push(context,
@@ -157,93 +153,107 @@ class _GamesState extends State<Games> {
         body: makeBody,
         bottomNavigationBar: makeBottom,
         drawer: SideBar('Activity'),
-        floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    elevation: 0.0,
-                    backgroundColor: Colors.transparent,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(
-                            top: 82.0,
-                            bottom: 16.0,
-                            left: 16.0,
-                            right: 16.0,
-                          ),
-                          margin: EdgeInsets.only(top: 66.0),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(16.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 10.0,
-                                offset: const Offset(0.0, 10.0),
+            try {
+              var count = 0;
+              Future getCount() async {
+                var temp = await dbHelper.getMark(name);
+                count = temp ?? 0;
+              }
+
+              getCount().then((value) {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        elevation: 0.0,
+                        backgroundColor: Colors.transparent,
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.only(
+                                top: 82.0,
+                                bottom: 16.0,
+                                left: 16.0,
+                                right: 16.0,
                               ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisSize:
-                                MainAxisSize.min, // To make the card compact
-                            children: <Widget>[
-                              Text(
-                                '20🍦',
-                                style: TextStyle(
-                                    fontSize: 30.0,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.pink),
-                              ),
-                              SizedBox(height: 16.0),
-                              Text(
-                                'You have 20 Ice Creams, cool! Learn more lessons to get more.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                              SizedBox(height: 24.0),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(); // To close the dialog
-                                  },
-                                  child: Text(
-                                    'Okay',
-                                    style: TextStyle(color: Colors.red),
+                              margin: EdgeInsets.only(top: 66.0),
+                              decoration: new BoxDecoration(
+                                color: Color.fromRGBO(255, 235, 242, 1.0),
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(16.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 10.0,
+                                    offset: const Offset(0.0, 10.0),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize
+                                    .min, // To make the card compact
+                                children: <Widget>[
+                                  Text(
+                                    "$count",
+                                    style: TextStyle(
+                                        fontSize: 50.0,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.red),
+                                  ),
+                                  SizedBox(height: 16.0),
+                                  Text(
+                                    'Hello $name, You have $count Ice Creams!',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  SizedBox(height: 16.0),
+                                  SizedBox(height: 24.0),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Ok',
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 25.0),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Positioned(
+                              left: 16.0,
+                              right: 16.0,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.blueAccent,
+                                radius: 66.0,
+                                backgroundImage:
+                                    AssetImage('images/ice_cream.jpg'),
+                              ),
+                            ),
+                            //...top circlular image part,
+                          ],
                         ),
-                        Positioned(
-                          left: 16.0,
-                          right: 16.0,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.blueAccent,
-                            radius: 66.0,
-                            backgroundImage: AssetImage('images/ice_cream.jpg'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
+                      );
+                    });
+              });
+            } catch (e) {}
           },
-          backgroundColor: Colors.white,
-          child: Icon(Icons.fastfood,color: Color.fromRGBO(255, 91, 123, 1)),
+          backgroundColor: Colors.white, //Color.fromRGBO(58, 66, 86, 1.0),
+          child: Icon(Icons.fastfood, color: Color.fromRGBO(255, 91, 123, 1)),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
