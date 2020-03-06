@@ -106,7 +106,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
-                  "Saman", 2, lesson, currentPage.toString(), 0);
+                  name, 2, lesson, currentPage.toString(), 0);
             }
 
             getCount().then((value) {
@@ -225,7 +225,7 @@ class _CharSelectPageState extends State<CharSelectPage> {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
-                  "Saman", 2, lesson, currentPage.toString(), 1);
+                  name, 2, lesson, currentPage.toString(), 1);
             }
 
             getCount().then((value) {

@@ -110,7 +110,7 @@ class _WordSelectPageState extends State<WordSelectPage> {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
-                  "Saman", 3, lesson, currentPage.toString(), 0);
+                  name, 3, lesson, currentPage.toString(), 0);
             }
 
             getCount().then((value) {
@@ -230,7 +230,7 @@ class _WordSelectPageState extends State<WordSelectPage> {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
-                  "Saman", 3, lesson, currentPage.toString(), 1);
+                  name, 3, lesson, currentPage.toString(), 1);
             }
 
             getCount().then((value) {
@@ -349,7 +349,7 @@ class _WordSelectPageState extends State<WordSelectPage> {
             var count;
             Future getCount() async {
               count = await dbHelper.updateMark(
-                  "Saman", 3, lesson, currentPage.toString(), 0);
+                  name, 3, lesson, currentPage.toString(), 0);
             }
 
             getCount().then((value) {
